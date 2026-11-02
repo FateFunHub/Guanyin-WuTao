@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>觀音武道 ‧ 寺廟數位智慧導覽殿堂 | Guanyin-WuTao Temple Guide</title>
+  <meta name="description" content="觀音武道寺廟文化數位導覽系統，收錄傳統閩南宮廟建築工藝特色、主祀觀世音菩薩與武聖關聖帝君等諸神介紹、參拜動線及即時QRCode現場導覽牌生成。">
+  <meta name="keywords" content="觀音武道, 寺廟導覽, 觀世音菩薩, 關聖帝君, 建築特色, 藻井, 剪黏, 龍柱, 廟宇參拜, QRCode導覽">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body id="home">
+
+  <!-- 頂部導覽導航列 -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="#home" class="nav-brand">
+        <span class="brand-icon">🏮</span>
+        <div class="brand-text">
+          <h1>觀音武道</h1>
+          <span>Guanyin-WuTao Guide</span>
+        </div>
+      </a>
+      <button class="nav-toggle" id="nav-toggle-btn" aria-label="切換選單">☰</button>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="#home" class="nav-link active">🏛️ 導覽首頁</a></li>
+        <li><a href="#architecture" class="nav-link">🏯 建築特色</a></li>
+        <li><a href="#deities" class="nav-link">🙏 供奉神明</a></li>
+        <li><a href="#route" class="nav-link">🚶 參拜動線</a></li>
+        <li><a href="#qrcode" class="nav-link">📱 QRCode專區</a></li>
+        <li><a href="#divination" class="nav-link">🥠 線上祈福</a></li>
+        <li><a href="#qrcode" class="nav-link nav-btn">產生現場導覽牌</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Hero 首頁主視覺 -->
+  <section class="hero-section">
+    <div class="hero-pattern"></div>
+    <div class="hero-content">
+      <div class="hero-badge">✨ 傳統廟宇工藝 ‧ 智慧數位導覽系統</div>
+      <h1 class="hero-title">觀音慈航 ‧ <span>武道浩然</span></h1>
+      <p class="hero-subtitle">
+        走進古典廟宇殿堂，細品匠師巧奪天工的木石雕琢，仰沐大慈大悲觀世音菩薩與忠義武聖關聖帝君之神威靈光。即時掃描專屬 QR Code，享受沉浸式語音數位導覽。
+      </p>
+      <div class="hero-actions">
+        <a href="#architecture" class="btn btn-primary"><span>🏛️</span> 探尋建築工藝</a>
+        <a href="#deities" class="btn btn-outline"><span>🙏</span> 認識供奉神尊</a>
+        <a href="#qrcode" class="btn btn-outline"><span>📲</span> 取得現場 QRCode</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <h3>6大</h3>
+          <p>國寶級工藝特色</p>
+        </div>
+        <div class="stat-item">
+          <h3>6尊</h3>
+          <p>主祀與配祀正神</p>
+        </div>
+        <div class="stat-item">
+          <h3>100%</h3>
+          <p>即時語音朗讀支援</p>
+        </div>
+        <div class="stat-item">
+          <h3>即時</h3>
+          <p>專屬 QRCode 標牌產生</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 建築特色區塊 -->
+  <section id="architecture" class="section-container">
+    <div class="section-header">
+      <span class="section-tag">Architectural Heritage</span>
+      <h2 class="section-title">建築特色與匠心工藝</h2>
+      <p class="section-desc">穿梭於光影與榫卯之間，每一方石雕、每一道飛簷，皆銘刻著世代相傳的哲理信仰與工藝智慧。</p>
+    </div>
+
+    <div class="cards-grid">
+      <!-- 建築 1: 三川殿與燕尾脊 -->
+      <article class="guide-card" id="arch-sanchuan">
+        <span class="card-header-badge">三川殿殿門</span>
+        <div class="card-visual" style="background: linear-gradient(135deg, #421010, #7d2626);">
+          <div class="visual-illustration">
+            <div class="visual-icon">⛩️</div>
+            <div class="visual-pattern"></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta"><span>建築美學 01</span> ‧ <span>門面格局</span></div>
+          <h3 class="card-title">三川殿與燕尾脊</h3>
+          <p class="card-text">
+            「三川」象徵開三門之規矩，中為中門、左右為龍虎門。屋頂採用閩南式「雙曲燕尾翹脊」，如大鳥展翅般劃向天際，展現出廟堂巍峨神聖之威儀，亦象徵向天祈福之崇敬。
+          </p>
+          <ul class="feature-highlights">
+            <li><span class="highlight-bullet">✦</span> <strong>入龍門出虎口：</strong> 右入左出，迎祥納福避凶煞</li>
+            <li><span class="highlight-bullet">✦</span> <strong>燕尾脊流線：</strong> 曲線優雅，配飾寶塔福星</li>
+          </ul>
+          <div class="card-actions">
+            <button class="btn-card" onclick="toggleSpeech(this, '三川殿是廟宇的前殿門面，象徵開三門之規矩，左邊為龍門、右邊為虎門。屋脊採用閩南傳統燕尾翹脊，如大鳥展翅劃向天際，象徵尊榮與吉祥。')">
+              <span>🔊</span> 語音導覽
+            </button>
+            <button class="btn-card" onclick="generateCardQR('architecture', '#arch-sanchuan', '三川殿與燕尾脊')">
+              <span>📱</span> 生成此處 QR Code
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 建築 2: 八角藻井與如意斗栱 -->
+      <article class="guide-card" id="arch-caisson">
+        <span class="card-header-badge">無釘卡榫木構</span>
+        <div class="card-visual" style="background: linear-gradient(135deg, #3d2314, #7a4628);">
+          <div class="visual-illustration">
+            <div class="visual-icon">🕸️</div>
+            <div class="visual-pattern"></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta"><span>大木作工藝 02</span> ‧ <span>頂蓋穹窿</span></div>
+          <h3 class="card-title">八角藻井與如意斗栱</h3>
+          <p class="card-text">
+            正殿上方中央的頂棚「藻井」，又稱蜘蛛結網。完全不使用任何鐵釘，以數百根榫卯斗栱層層向中心挑出疊砌，如同八卦漩渦凝聚天地靈氣，既能阻絕水火之災，亦彰顯工藝極致。
+          </p>
+          <ul class="feature-highlights">
+            <li><span class="highlight-bullet">✦</span> <strong>純木榫卯咬合：</strong> 抗震極佳，巧奪天工</li>
+            <li><span class="highlight-bullet">✦</span> <strong>天圓地方寓意：</strong> 聚氣凝神，尊崇天道自然</li>
+          </ul>
+          <div class="card-actions">
+            <button class="btn-card" onclick="toggleSpeech(this, '八角藻井是傳統大木工藝的巔峰之作，又稱蜘蛛結網。全座不用一根鐵釘，完全仰賴卡榫交疊，層層旋轉向上收攏，兼具消災阻火與凝聚靈氣的文化意涵。')">
+              <span>🔊</span> 語音導覽
+            </button>
+            <button class="btn-card" onclick="generateCardQR('architecture', '#arch-caisson', '八角藻井與如意斗栱')">
+              <span>📱</span> 生成此處 QR Code
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 建築 3: 剪黏與交趾陶彩繪 -->
+      <article class="guide-card" id="arch-jiannian">
+        <span class="card-header-badge">屋脊與壁堵裝飾</span>
+        <div class="card-visual" style="background: linear-gradient(135deg, #16362d, #2d6b59);">
+          <div class="visual-illustration">
+            <div class="visual-icon">🐉</div>
+            <div class="visual-pattern"></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta"><span>泥塑嵌彩 03</span> ‧ <span>剪花與釉彩</span></div>
+          <h3 class="card-title">雙龍剪黏與交趾陶</h3>
+          <p class="card-text">
+            屋頂正脊有「雙龍搶珠」或「雙龍護塔」剪黏，以破裂碎瓷片依形裁剪拼貼，神態靈動晶瑩。水車堵與身堵鑲嵌低溫鉛釉「交趾陶」，生動演繹封神榜與三國忠孝節義傳奇。
+          </p>
+          <ul class="feature-highlights">
+            <li><span class="highlight-bullet">✦</span> <strong>剪瓷嵌百藝：</strong> 烈日雨水洗禮歷久彌新</li>
+            <li><span class="highlight-bullet">✦</span> <strong>忠孝教化壁畫：</strong> 忠義關公、觀音普渡寓意</li>
+          </ul>
+          <div class="card-actions">
+            <button class="btn-card" onclick="toggleSpeech(this, '剪黏是以瓷片剪裁拼貼而成的傳統立體裝飾，在屋脊上呈現雙龍搶珠的磅礡氣勢；壁堵上的交趾陶則用色彩斑斕的釉燒人物，訴說三國與民間傳說的忠孝仁義故事。')">
+              <span>🔊</span> 語音導覽
+            </button>
+            <button class="btn-card" onclick="generateCardQR('architecture', '#arch-jiannian', '雙龍剪黏與交趾陶')">
+              <span>📱</span> 生成此處 QR Code
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 建築 4: 八角透雕盤龍石柱 -->
+      <article class="guide-card" id="arch-pillars">
+        <span class="card-header-badge">石雕藝術瑰寶</span>
+        <div class="card-visual" style="background: linear-gradient(135deg, #2a333d, #4d5c6e);">
+          <div class="visual-illustration">
+            <div class="visual-icon">🏛️</div>
+            <div class="visual-pattern"></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta"><span>石作工藝 04</span> ‧ <span>青斗石龍柱</span></div>
+          <h3 class="card-title">八角透雕盤龍石柱</h3>
+          <p class="card-text">
+            前殿龍柱採用堅實細密的青斗石整石雕成，採「降龍」與「升龍」對稱相望。石匠運用深浮雕與鏤空透雕手法，龍身穿梭於雲霧波濤之中，爪握龍珠，栩栩如生，觸感溫潤而威嚴。
+          </p>
+          <ul class="feature-highlights">
+            <li><span class="highlight-bullet">✦</span> <strong>乾坤交泰：</strong> 左柱升龍望日，右柱降龍乘浪</li>
+            <li><span class="highlight-bullet">✦</span> <strong>鏤空多層次：</strong> 內藏人物走獸，細節入微</li>
+          </ul>
+          <div class="card-actions">
+            <button class="btn-card" onclick="toggleSpeech(this, '盤龍石柱採用上等青斗石精心雕琢，以高難度的鏤空透雕技法呈現。一龍翻身俯衝入浪，一龍騰空仰望晴空，象徵風調雨順與乾坤調和。')">
+              <span>🔊</span> 語音導覽
+            </button>
+            <button class="btn-card" onclick="generateCardQR('architecture', '#arch-pillars', '八角透雕盤龍石柱')">
+              <span>📱</span> 生成此處 QR Code
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 建築 5: 丹墀御路龍陛與抱鼓石 -->
+      <article class="guide-card" id="arch-pathway">
+        <span class="card-header-badge">中軸神道</span>
+        <div class="card-visual" style="background: linear-gradient(135deg, #38243b, #69446e);">
+          <div class="visual-illustration">
+            <div class="visual-icon">🦁</div>
+            <div class="visual-pattern"></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta"><span>石作裝飾 05</span> ‧ <span>神行御道</span></div>
+          <h3 class="card-title">丹墀御路龍陛與抱鼓石</h3>
+          <p class="card-text">
+            正殿前階梯中央斜立「御路龍陛石」，雕刻祥龍翻騰、海水江崖，為神明輿駕專行之中軸。三川門前則座落螺紋抱鼓石與青斗石獅，公獅戲彩球、母獅撫幼子，守護山門基石。
+          </p>
+          <ul class="feature-highlights">
+            <li><span class="highlight-bullet">✦</span> <strong>神道尊崇：</strong> 凡人行左右階，中軸敬奉神威</li>
+            <li><span class="highlight-bullet">✦</span> <strong>抱鼓鎮門：</strong> 鞏固門臼柱基，雕刻如意捲草</li>
+          </ul>
+          <div class="card-actions">
+            <button class="btn-card" onclick="toggleSpeech(this, '御路石階位於大殿台階正中央，雕有盤龍翻滾圖案，是專供神明法駕通行的神道。兩側門前的抱鼓石與石獅，不僅穩固門框，更寓意迎祥鎮煞與護佑平安。')">
+              <span>🔊</span> 語音導覽
+            </button>
+            <button class="btn-card" onclick="generateCardQR('architecture', '#arch-pathway', '丹墀御路龍陛與抱鼓石')">
+              <span>📱</span> 生成此處 QR Code
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 建築 6: 精雕雀替與員光梁木 -->
+      <article class="guide-card" id="arch-woodcarving">
+        <span class="card-header-badge">細木作插角</span>
+        <div class="card-visual" style="background: linear-gradient(135deg, #4d3319, #8c5d2e);">
+          <div class="visual-illustration">
+            <div class="visual-icon">🪵</div>
+            <div class="visual-pattern"></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta"><span>小木雕刻 06</span> ‧ <span>樑柱承接</span></div>
+          <h3 class="card-title">精雕雀替與員光花鳥</h3>
+          <p class="card-text">
+            樑柱交角處設有「雀替（插角）」，如同展翅飛鳥托住大樑，減少跨距剪力。其上雕琢鳳凰、飛天樂伎與如意花草；通樑下之「員光」則刻劃歷史戰役故事，集力學防震與藝術精粹於一體。
+          </p>
+          <ul class="feature-highlights">
+            <li><span class="highlight-bullet">✦</span> <strong>結構強化：</strong> 分散樑木重壓，增加抗震性</li>
+            <li><span class="highlight-bullet">✦</span> <strong>寓意吉慶：</strong> 喜上眉梢、鹿鶴同春祥瑞之景</li>
+          </ul>
+          <div class="card-actions">
+            <button class="btn-card" onclick="toggleSpeech(this, '雀替又稱插角，位於柱子與橫樑的直角交叉點，外型如同展翅飛雀。它不僅能有效分散大樑承重，上面還雕刻著精美的飛鳳仙人，讓整座廟宇結構既穩固又充滿靈秀之美。')">
+              <span>🔊</span> 語音導覽
+            </button>
+            <button class="btn-card" onclick="generateCardQR('architecture', '#arch-woodcarving', '精雕雀替與員光花鳥')">
+              <span>📱</span> 生成此處 QR Code
+            </button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- 供奉神明區塊 -->
+  <section id="deities" class="section-container" style="background: #faf8f5;">
+    <div class="section-header">
+      <span class="section-tag">Deities & Holy Altars</span>
+      <h2 class="section-title">供奉神明與虔誠信仰</h2>
+      <p class="section-desc">主祀大慈大悲觀世音菩薩與忠義浩然武聖關聖帝君，諸天神真各司其職，護佑信眾家安宅順、百業興旺。</p>
+    </div>
+
+    <div class="cards-grid">
+      <!-- 神明 1: 觀世音菩薩 -->
+      <article class="guide-card" id="deity-guanyin">
+        <span class="card-header-badge" style="border-color: #d4af37; color: #fff; background: rgba(184, 134, 11, 0.85);">主殿大士 ‧ 大慈大悲</span>
+        <div class="card-visual" style="background: linear-gradient(135deg, #1c3b57, #316491);">
+          <div class="visual-illustration">
+            <div class="visual-icon">🪷</div>
+            <div class="visual-pattern"></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta"><span>菩薩德澤</span> ‧ <span>西方三聖之一</span></div>
+          <h3 class="card-title">觀世音菩薩 (Guanyin)</h3>
+          <p class="card-text">
+            觀音大士尋聲救苦，普門示現三十三身。端坐白蓮之上，手托淨瓶、手執楊柳枝，象徵灑甘露以化解世間一切苦難怨懟。常來參拜能洗滌塵思、修心增福，保佑閤家身心康寧、消災解厄。
+          </p>
+          <ul class="feature-highlights">
+            <li><span class="highlight-bullet">✦</span> <strong>庇佑事項：</strong> 心靈平安、化解厄運、消災免難、啟發智慧</li>
+            <li><span class="highlight-bullet">✦</span> <strong>敬奉供品：</strong> 鮮花（百合/蓮花）、素果、清茶三杯、檀香</li>
+          </ul>
+          <div class="card-actions">
+            <button class="btn-card" onclick="toggleSpeech(this, '觀世音菩薩以大慈大悲聞名，手持淨瓶與楊柳甘露，尋聲救苦。信眾虔心禮拜觀音菩薩，能安撫煩躁心靈、化解災厄障礙，保佑家庭和睦與身心平安。')">
+              <span>🔊</span> 語音導覽
+            </button>
+            <button class="btn-card" onclick="generateCardQR('guanyin', '#deity-guanyin', '觀世音菩薩')">
+              <span>📱</span> 生成專屬 QR Code
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 神明 2: 武聖關聖帝君 -->
+      <article class="guide-card" id="deity-guandi">
+        <span class="card-header-badge" style="border-color: #a72322; color: #fff; background: rgba(167, 35, 34, 0.9);">武聖殿 ‧ 浩然正氣</span>
+        <div class="card-visual" style="background: linear-gradient(135deg, #4f1212, #852222);">
+          <div class="visual-illustration">
+            <div class="visual-icon">⚔️</div>
+            <div class="visual-pattern"></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta"><span>武聖尊神</span> ‧ <span>協天大帝 ‧ 武財神</span></div>
+          <h3 class="card-title">關聖帝君 (Guansheng Dijun)</h3>
+          <p class="card-text">
+            武道精神之最高象徵，兼具「忠、義、仁、勇」之大節。一手端持《春秋》明辨是非，威武青龍偃月刀辟邪除煞。帝君亦被廣大商賈奉為武財神，庇佑誠信經營、事業拓張、除小人與官司順利。
+          </p>
+          <ul class="feature-highlights">
+            <li><span class="highlight-bullet">✦</span> <strong>庇佑事項：</strong> 事業拓展、武財招納、正氣辟煞、法律信義</li>
+            <li><span class="highlight-bullet">✦</span> <strong>敬奉供品：</strong> 水果、清茶、發糕、誠心正念（忌奉楊桃）</li>
+          </ul>
+          <div class="card-actions">
+            <button class="btn-card" onclick="toggleSpeech(this, '關聖帝君代表浩然正氣與忠義武道，手閱春秋明辨是非。帝君同時也是商界的武財神，庇佑做生意誠信招財、掃除小人是非，助事業開拓宏圖。')">
+              <span>🔊</span> 語音導覽
+            </button>
+            <button class="btn-card" onclick="generateCardQR('guandi', '#deity-guandi', '關聖帝君 (武聖)')">
+              <span>📱</span> 生成專屬 QR Code
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 神明 3: 天上聖母 (媽祖) -->
+      <article class="guide-card" id="deity-mazu">
+        <span class="card-header-badge">慈悲天后</span>
+        <div class="card-visual" style="background: linear-gradient(135deg, #1b3a4b, #2b617d);">
+          <div class="visual-illustration">
+            <div class="visual-icon">🌊</div>
+            <div class="visual-pattern"></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta"><span>水仙海神</span> ‧ <span>天后慈憫</span></div>
+          <h3 class="card-title">天上聖母 媽祖</h3>
+          <p class="card-text">
+            千里眼、順風耳二大將軍隨侍在側。聖母如慈母般凝視眾生，自古庇佑航海捕魚與旅人平安，現代更廣泛守護大眾交通出行、外出求職打拼皆能化險為夷、風調雨順、安居樂業。
+          </p>
+          <ul class="feature-highlights">
+            <li><span class="highlight-bullet">✦</span> <strong>庇佑事項：</strong> 交通行車安全、出外順利、家庭幸福</li>
+            <li><span class="highlight-bullet">✦</span> <strong>敬奉供品：</strong> 鮮花、圓形水果、紅龜粿、甜食糕點</li>
+          </ul>
+          <div class="card-actions">
+            <button class="btn-card" onclick="toggleSpeech(this, '天上聖母媽祖如同慈愛的母親，庇佑信眾出入平安、遠離災殃。無論是出外旅行、開車行船或祈求闔家和睦，皆可虔心祈求聖母保佑。')">
+              <span>🔊</span> 語音導覽
+            </button>
+            <button class="btn-card" onclick="generateCardQR('deities', '#deity-mazu', '天上聖母媽祖')">
+              <span>📱</span> 生成專屬 QR Code
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 神明 4: 文昌帝君 -->
+      <article class="guide-card" id="deity-wenchang">
+        <span class="card-header-badge">智慧文運</span>
+        <div class="card-visual" style="background: linear-gradient(135deg, #2b3a1a, #537033);">
+          <div class="visual-illustration">
+            <div class="visual-icon">📜</div>
+            <div class="visual-pattern"></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta"><span>文星司祿</span> ‧ <span>文曲星曜</span></div>
+          <h3 class="card-title">文昌梓潼帝君</h3>
+          <p class="card-text">
+            掌管天下士子功名、仕途考運與文運利祿。手執毛筆，點化開竅。舉凡各類國家考試、升學學測、職場考績昇遷或專業證照，誠心稟報准考證與姓名，皆能開啟智慧心燈、臨場沉著發揮。
+          </p>
+          <ul class="feature-highlights">
+            <li><span class="highlight-bullet">✦</span> <strong>庇佑事項：</strong> 考運亨通、金榜題名、思維清晰、職場升職</li>
+            <li><span class="highlight-bullet">✦</span> <strong>敬奉供品：</strong> 蔥（聰明）、芹菜（勤勞）、包子粽子（包中）</li>
+          </ul>
+          <div class="card-actions">
+            <button class="btn-card" onclick="toggleSpeech(this, '文昌帝君主掌天下士子文運功名，手持朱筆照亮智慧之光。考生與求職者前來參拜，帶上象徵聰明與勤勞的供品，能助心緒沉穩、金榜題名。')">
+              <span>🔊</span> 語音導覽
+            </button>
+            <button class="btn-card" onclick="generateCardQR('deities', '#deity-wenchang', '文昌帝君')">
+              <span>📱</span> 生成專屬 QR Code
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 神明 5: 註生娘娘 -->
+      <article class="guide-card" id="deity-zhusheng">
+        <span class="card-header-badge">育嗣安胎</span>
+        <div class="card-visual" style="background: linear-gradient(135deg, #522238, #8a3a5e);">
+          <div class="visual-illustration">
+            <div class="visual-icon">👶</div>
+            <div class="visual-pattern"></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta"><span>司掌子嗣</span> ‧ <span>孕育護幼</span></div>
+          <h3 class="card-title">註生娘娘</h3>
+          <p class="card-text">
+            手持生育簿與毛筆，身旁常配十二婆姐。專職司掌懷孕生子、安胎保產與幼兒成長。無論是祈求添丁賜嗣、孕期平安順產，或是孩童平安健康長大，皆在娘娘溫柔仁厚的庇佑之中。
+          </p>
+          <ul class="feature-highlights">
+            <li><span class="highlight-bullet">✦</span> <strong>庇佑事項：</strong> 求子受孕、孕婦安胎、順利生產、幼童無災</li>
+            <li><span class="highlight-bullet">✦</span> <strong>敬奉供品：</strong> 白花（求男）、紅花（求女）、桂圓、紅棗</li>
+          </ul>
+          <div class="card-actions">
+            <button class="btn-card" onclick="toggleSpeech(this, '註生娘娘掌管懷孕添丁、安胎保產與孩童成長。信眾常帶紅白鮮花前來祈願生男生女，祈求娘娘護佑孕期順利、孩子平安長大。')">
+              <span>🔊</span> 語音導覽
+            </button>
+            <button class="btn-card" onclick="generateCardQR('deities', '#deity-zhusheng', '註生娘娘')">
+              <span>📱</span> 生成專屬 QR Code
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- 神明 6: 下壇虎爺將軍 -->
+      <article class="guide-card" id="deity-huye">
+        <span class="card-header-badge">神案守護 ‧ 招財</span>
+        <div class="card-visual" style="background: linear-gradient(135deg, #423010, #805c1e);">
+          <div class="visual-illustration">
+            <div class="visual-icon">🐯</div>
+            <div class="visual-pattern"></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta"><span>下壇座騎</span> ‧ <span>咬錢虎將軍</span></div>
+          <h3 class="card-title">下壇黑虎將軍 (虎爺)</h3>
+          <p class="card-text">
+            威風凜凜鎮守於神案下方，神威迅捷。俗語說「虎爺咬錢來」，民間視虎爺為極靈驗之偏財神。此外，因虎爺高度接近孩童視角，更是保護嬰孩遠離驚嚇、健康活潑好養育的專屬守護神。
+          </p>
+          <ul class="feature-highlights">
+            <li><span class="highlight-bullet">✦</span> <strong>庇佑事項：</strong> 咬錢招偏財、鎮煞驅凶、孩童避驚、除小人</li>
+            <li><span class="highlight-bullet">✦</span> <strong>敬奉供品：</strong> 生雞蛋、生肉片（依廟規）、布丁甜點、換錢水硬幣</li>
+          </ul>
+          <div class="card-actions">
+            <button class="btn-card" onclick="toggleSpeech(this, '下壇虎爺將軍鎮守在神桌下方，擁有強大的辟邪招財神力。俗話說虎爺咬錢來，民眾常以雞蛋供奉換取錢母，虎爺同時也是小孩子的守護神。')">
+              <span>🔊</span> 語音導覽
+            </button>
+            <button class="btn-card" onclick="generateCardQR('deities', '#deity-huye', '下壇虎爺將軍')">
+              <span>📱</span> 生成專屬 QR Code
+            </button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- 參拜動線流程 -->
+  <section id="route" class="route-section section-container">
+    <div class="section-header">
+      <span class="section-tag">Worship Guide</span>
+      <h2 class="section-title">傳統五步參拜動線與心法</h2>
+      <p class="section-desc">遵循傳統廟宇禮制，端莊心意，依照順序逐步參香禮拜，感應天地神靈之福澤。</p>
+    </div>
+
+    <div class="timeline">
+      <!-- 步驟 1 -->
+      <div class="timeline-item left">
+        <div class="timeline-node">1</div>
+        <div class="timeline-card">
+          <span class="timeline-step">STEP 01 ‧ 敬天尊地</span>
+          <h3 class="timeline-title">第一步：天公爐 (拜天公)</h3>
+          <p class="timeline-desc">面對廟外天際，手持清香三拜玉皇上帝大天尊，感謝天覆地載之恩，祈求天地神明庇佑國泰民安。</p>
+        </div>
+      </div>
+      <!-- 步驟 2 -->
+      <div class="timeline-item right">
+        <div class="timeline-node">2</div>
+        <div class="timeline-card">
+          <span class="timeline-step">STEP 02 ‧ 主殿正神</span>
+          <h3 class="timeline-title">第二步：主殿 觀世音菩薩</h3>
+          <p class="timeline-desc">向中殿大慈大悲觀世音菩薩合十行禮，默念姓名、住址、農曆生辰，懇請菩薩甘露洗滌煩憂、賜與平靜祥和。</p>
+        </div>
+      </div>
+      <!-- 步驟 3 -->
+      <div class="timeline-item left">
+        <div class="timeline-node">3</div>
+        <div class="timeline-card">
+          <span class="timeline-step">STEP 03 ‧ 武聖浩然</span>
+          <h3 class="timeline-title">第三步：武聖殿 關聖帝君</h3>
+          <p class="timeline-desc">向關聖帝君敬拜，稟告個人事業目標或當前困難，祈求帝君浩然正氣加持，驅散阻礙、拓展財源。</p>
+        </div>
+      </div>
+      <!-- 步驟 4 -->
+      <div class="timeline-item right">
+        <div class="timeline-node">4</div>
+        <div class="timeline-card">
+          <span class="timeline-step">STEP 04 ‧ 偏殿諸真</span>
+          <h3 class="timeline-title">第四步：配祀神尊 (媽祖、文昌、註生)</h3>
+          <p class="timeline-desc">依序參拜天上聖母（求出入平安）、文昌帝君（求功名學業）與註生娘娘（求添丁護幼），心懷敬意。</p>
+        </div>
+      </div>
+      <!-- 步驟 5 -->
+      <div class="timeline-item left">
+        <div class="timeline-node">5</div>
+        <div class="timeline-card">
+          <span class="timeline-step">STEP 05 ‧ 下壇招財</span>
+          <h3 class="timeline-title">第五步：神案下 虎爺將軍</h3>
+          <p class="timeline-desc">蹲身向神案下方之虎爺將軍致意，以硬幣至「虎爺錢水」大錢換小錢，收妥錢母，庇佑財運源源不絕。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QR Code 產生與管理中心 -->
+  <section id="qrcode" class="qrcode-section section-container">
+    <div class="section-header">
+      <span class="section-tag">Interactive QR Code Hub</span>
+      <h2 class="section-title">現場導覽牌 ‧ QR Code 互動中心</h2>
+      <p class="section-desc">支援即時動態生成各展區、神明神位之專屬 QR Code。廟方或管理者可一鍵下載高畫質 PNG，或列印成實體導覽立牌貼於神桌！</p>
+    </div>
+
+    <div class="qr-hub-card">
+      <!-- 預設按鈕群組 -->
+      <div class="qr-selector-tabs">
+        <button class="qr-tab-btn active" data-preset="home">🌐 全館總導覽</button>
+        <button class="qr-tab-btn" data-preset="architecture">🏛️ 建築工藝巡禮</button>
+        <button class="qr-tab-btn" data-preset="deities">🙏 供奉神明殿堂</button>
+        <button class="qr-tab-btn" data-preset="guanyin">🪷 觀世音菩薩專牌</button>
+        <button class="qr-tab-btn" data-preset="guandi">⚔️ 關聖帝君專牌</button>
+        <button class="qr-tab-btn" data-preset="route">🚶 參拜動線導引</button>
+        <button class="qr-tab-btn" data-preset="divination">🥠 線上祈福籤詩</button>
+      </div>
+
+      <!-- QR Code 展現區 -->
+      <div class="qr-display-container">
+        <div class="qr-box-wrapper">
+          <div id="qrcode-canvas-box"></div>
+          <p class="qr-tip">💡 請使用手機相機直接掃描</p>
+        </div>
+
+        <div class="qr-info-panel">
+          <h3 id="qr-info-title">【觀音武道】全館總導覽</h3>
+          <div class="qr-current-url" id="qr-info-url">https://fatefunhub.github.io/Guanyin-WuTao/#home</div>
+          <ul class="qr-meta-list">
+            <li><span>📌</span> <strong>導覽目標：</strong> <span id="qr-info-desc">全館數位智慧導覽首頁</span></li>
+            <li><span>🔊</span> <strong>語音解說：</strong> 支援智慧語音真人發聲朗讀</li>
+            <li><span>📐</span> <strong>輸出規格：</strong> 高容錯糾錯 (Level H)、支援輸出印刷格式</li>
+          </ul>
+
+          <div class="qr-btn-group">
+            <button class="btn btn-primary" onclick="downloadQRCode()">
+              <span>💾</span> 下載 QR Code 圖片
+            </button>
+            <button class="btn btn-outline" style="color: var(--dark-red); border-color: var(--gold-accent);" onclick="printQRCard()">
+              <span>🖨️</span> 列印實體導覽立牌
+            </button>
+            <button class="btn btn-outline" style="color: var(--text-main); border-color: var(--border-color);" onclick="copyQRUrl()">
+              <span>📋</span> 複製導覽連結
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 自訂網址輸入區 -->
+      <div class="custom-url-box">
+        <h4>🔧 自訂網址產生器（輸入任意特定網頁或神位分頁連結）：</h4>
+        <div class="input-group">
+          <input type="text" id="custom-url-input" class="input-control" placeholder="例如：https://fatefunhub.github.io/Guanyin-WuTao/#architecture">
+          <button class="btn btn-primary" id="btn-apply-custom">立即生成 QR Code</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 線上求籤祈願互動 -->
+  <section id="divination" class="interactive-section section-container">
+    <div class="section-header">
+      <span class="section-tag">Spiritual Fortune</span>
+      <h2 class="section-title">心誠則靈 ‧ 線上靈籤祈願</h2>
+      <p class="section-desc">心中默想所求之事（事業、健康、功名、家運），虔誠向觀音大士與武聖帝君求取指引靈籤。</p>
+    </div>
+
+    <div class="divination-box">
+      <div class="divination-cyl" id="divination-cyl">🎋</div>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">靜下心神，深呼吸三次，向菩薩與帝君稟報心事後點擊按鈕擲筊求籤。</p>
+      <button class="btn btn-primary" id="btn-draw-fortune" style="font-size: 1.1rem; padding: 0.9rem 2.2rem;">
+        <span>🙏</span> 虔誠擲筊 ‧ 抽取靈籤
+      </button>
+
+      <div class="fortune-result-card" id="fortune-result-card">
+        <div class="fortune-title">
+          <span>神明指引 ‧ 靈籤結果</span>
+          <span id="fortune-grade" style="color: var(--gold-accent);">上上大吉</span>
+        </div>
+        <div class="fortune-poem" id="fortune-poem-text">
+          春風得意馬蹄疾，一日看盡長安花。<br>
+          觀音灑甘露，武聖賜福祥。
+        </div>
+        <div class="fortune-explain">
+          <strong>【籤詩解析】：</strong>
+          <span id="fortune-explain-text">大吉之兆。目前所求之事如春風化雨，貴人相助，功名利祿皆稱心如意。唯需心存善念，常行布施，福澤更長。</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 頁腳資訊 -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <h2>觀音武道 ‧ 寺廟數位導覽殿堂</h2>
+        <p>致力於運用現代 Web 科技與多媒體互動，永久保存傳統廟宇建築匠師智慧、宗教藝術瑰寶與深厚民間信仰精神。隨手掃描，古蹟就在指尖呼吸。</p>
+      </div>
+      <div class="footer-col">
+        <h3>快速導覽</h3>
+        <ul class="footer-links">
+          <li><a href="#home">導覽總覽</a></li>
+          <li><a href="#architecture">六大建築工藝</a></li>
+          <li><a href="#deities">供奉六大神尊</a></li>
+          <li><a href="#route">參拜動線與心法</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>科技導覽工具</h3>
+        <ul class="footer-links">
+          <li><a href="#qrcode">現場 QRCode 生成器</a></li>
+          <li><a href="#qrcode">下載高清導覽標牌</a></li>
+          <li><a href="#divination">線上祈福靈籤</a></li>
+          <li><a href="https://github.com/FateFunHub/Guanyin-WuTao" target="_blank" rel="noopener">GitHub 專案原始碼</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 觀音武道 (Guanyin-WuTao). Powered by FateFunHub. Released under MIT License.</p>
+    </div>
+  </footer>
+
+  <!-- 專用隱藏列印模板 (列印導覽牌時呈現) -->
+  <div id="print-card-target" style="display: none;">
+    <div style="text-align: center; border-bottom: 2px solid #a72322; padding-bottom: 15px; margin-bottom: 20px;">
+      <h1 style="font-family: serif; color: #a72322; margin: 0; font-size: 28px;">觀音武道 ‧ 寺廟數位智慧導覽牌</h1>
+      <p style="color: #666; margin: 5px 0 0; font-size: 14px;">請使用手機相機掃描下方 QR Code，即刻開啟現場語音與建築詳解導覽</p>
+    </div>
+    <div style="text-align: center; margin: 30px 0;">
+      <h2 id="print-card-title" style="color: #6e1515; font-size: 22px; margin-bottom: 15px;">【觀音武道】全館總導覽</h2>
+      <div id="print-qr-target" style="display: inline-block; padding: 15px; border: 2px solid #d4af37; border-radius: 12px;"></div>
+      <p id="print-card-desc" style="color: #555; max-width: 500px; margin: 15px auto 0; font-size: 15px; line-height: 1.6;">
+        掃描即可開啟全館多功能導覽、建築巡禮、神明專區與語音導覽服務。
+      </p>
+    </div>
+    <div style="border-top: 1px dashed #ccc; padding-top: 15px; text-align: center; color: #888; font-size: 12px;">
+      觀音武道 數位文化資產導覽系統 ‧ 歡迎各方信眾掃描參訪
+    </div>
+  </div>
+
+  <!-- QR Code 引擎 -->
+  <script src="js/qrcode.min.js"></script>
+  <!-- 主互動腳本 -->
+  <script src="js/app.js"></script>
+</body>
+</html>
