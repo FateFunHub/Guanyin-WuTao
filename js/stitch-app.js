@@ -14,7 +14,13 @@
     isPlaying: false,
     isPaused: false,
     chunks: [],
+    chunkStarts: [],
+    totalChars: 0,
+    estTotalSec: 0,
     chunkIdx: 0,
+    chunkStartedAt: 0,
+    utterToken: 0,
+    isScrubbing: false,
     elapsed: 0,
     timer: null
   };
@@ -40,18 +46,71 @@
   }
 
   // =========================================================
-  // Web Speech API 真語音合成朗讀
+  // Web Speech API 真語音合成朗讀 (含自然語音優先、破音字校正與進度條跳轉)
   // =========================================================
   function pickVoice(langCode) {
     if (!("speechSynthesis" in window)) return null;
     const voices = window.speechSynthesis.getVoices() || [];
+    if (!voices.length) return null;
     const norm = langCode.toLowerCase();
     const prefix = norm.split("-")[0];
-    return (
-      voices.find(v => v.lang.replace("_", "-").toLowerCase() === norm) ||
-      voices.find(v => v.lang.toLowerCase().startsWith(prefix)) ||
-      null
-    );
+
+    const candidates = voices.filter(v => {
+      const vl = (v.lang || "").replace("_", "-").toLowerCase();
+      return vl === norm || vl.startsWith(prefix);
+    });
+    if (!candidates.length) return null;
+
+    const scoreVoice = v => {
+      const vl = (v.lang || "").replace("_", "-").toLowerCase();
+      const name = (v.name || "").toLowerCase();
+      let s = 0;
+      if (vl === norm) s += 100;
+      if (name.includes("natural") || name.includes("online")) s += 60;
+      if (name.includes("hsiaochen") || name.includes("hsiaoyu") || name.includes("yunjhe")) s += 50;
+      if (name.includes("google") && vl.includes("tw")) s += 45;
+      if (name.includes("meijia") || name.includes("sinji")) s += 35;
+      if (name.includes("hanhan") || name.includes("zhiwei") || name.includes("desktop")) s -= 30;
+      return s;
+    };
+
+    candidates.sort((a, b) => scoreVoice(b) - scoreVoice(a));
+    return candidates[0] || null;
+  }
+
+  function prepareSpeechText(text, lang) {
+    if (!text) return "";
+    let s = text;
+    if (lang === "zh") {
+      // 古蹟與佛道專有名詞破音字、罕見字讀音校正（僅影響語音朗讀，不改動畫面文字）
+      const lexicon = [
+        [/吳夲/g, "吳滔"],
+        [/夲/g, "滔"],
+        [/伽藍/g, "茄藍"],
+        [/重[簷檐]/g, "蟲簷"],
+        [/吽/g, "轟"],
+        [/咾咕石/g, "老孤石"],
+        [/咾咕/g, "老孤"],
+        [/斗栱/g, "斗拱"],
+        [/戧脊/g, "嗆脊"],
+        [/懸魚/g, "玄魚"],
+        [/山門護法[——\-]+/g, "山門護法，"],
+        [/[（(](?:A|HUM|GY-?\d+|XJ-?\d+|A\d+)[）)]/gi, ""],
+        [/\b(?:GY|XJ|A)-?\d{1,2}\b/gi, ""]
+      ];
+      lexicon.forEach(([re, rep]) => {
+        s = s.replace(re, rep);
+      });
+      s = s.replace(/[・｜\/]/g, "，").replace(/——/g, "，");
+    }
+    return s.replace(/\s+/g, " ").trim();
+  }
+
+  function charsPerSecond(lang) {
+    if (lang === "en") return 14;
+    if (lang === "ko") return 3.8;
+    if (lang === "ja") return 4.2;
+    return 4.3;
   }
 
   function splitSentences(text, lang) {
@@ -63,12 +122,33 @@
   }
 
   function formatMMSS(sec) {
-    const m = Math.floor(sec / 60);
-    const s = Math.floor(sec % 60);
+    const safe = Math.max(0, Math.floor(sec || 0));
+    const m = Math.floor(safe / 60);
+    const s = Math.floor(safe % 60);
     return (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
   }
 
+  function computeProgressFraction() {
+    if (!tts.isPlaying || !tts.totalChars) return 0;
+    const idx = Math.min(tts.chunkIdx, tts.chunks.length - 1);
+    const startChar = tts.chunkStarts[idx] || 0;
+    const endChar = tts.chunkStarts[idx + 1] || tts.totalChars;
+    const startFrac = startChar / tts.totalChars;
+    const endFrac = endChar / tts.totalChars;
+
+    let inChunkRatio = 0;
+    if (tts.chunkStartedAt && !tts.isPaused) {
+      const rate = playbackRates[rateIdx] || 1.0;
+      const chunkLen = Math.max(1, (tts.chunks[idx] || "").length);
+      const estChunkMs = ((chunkLen / charsPerSecond(currentLang)) / rate) * 1000;
+      const dt = Math.max(0, Date.now() - tts.chunkStartedAt);
+      inChunkRatio = Math.min(0.96, dt / Math.max(400, estChunkMs));
+    }
+    return Math.max(0, Math.min(1, startFrac + inChunkRatio * (endFrac - startFrac)));
+  }
+
   function stopSpeech() {
+    tts.utterToken += 1;
     if ("speechSynthesis" in window) {
       window.speechSynthesis.cancel();
     }
@@ -82,7 +162,11 @@
     tts.isPlaying = false;
     tts.isPaused = false;
     tts.chunks = [];
+    tts.chunkStarts = [];
+    tts.totalChars = 0;
+    tts.estTotalSec = 0;
     tts.chunkIdx = 0;
+    tts.chunkStartedAt = 0;
     tts.elapsed = 0;
     if (prevCard) updateCardAudioUI(prevCard);
     updateHeaderAudioIcon();
@@ -94,6 +178,10 @@
       stopSpeech();
       return;
     }
+    tts.utterToken += 1;
+    const myToken = tts.utterToken;
+    tts.chunkStartedAt = Date.now();
+
     const utter = new SpeechSynthesisUtterance(tts.chunks[tts.chunkIdx]);
     const langCode = LANG_MAP[currentLang] || "zh-TW";
     utter.lang = langCode;
@@ -101,9 +189,9 @@
     const v = pickVoice(langCode);
     if (v) utter.voice = v;
 
-    const currentKey = tts.activeKey;
     utter.onend = () => {
-      if (tts.activeKey === currentKey && tts.isPlaying && !tts.isPaused) {
+      if (tts.utterToken !== myToken) return;
+      if (tts.isPlaying && !tts.isPaused) {
         tts.chunkIdx += 1;
         if (tts.chunkIdx < tts.chunks.length) {
           if (tts.activeCard) updateCardAudioUI(tts.activeCard);
@@ -114,6 +202,7 @@
       }
     };
     utter.onerror = ev => {
+      if (tts.utterToken !== myToken) return;
       if (ev.error === "interrupted" || ev.error === "canceled") return;
       stopSpeech();
     };
@@ -127,11 +216,66 @@
     if (h3) parts.push(h3.textContent.trim());
     cardEl.querySelectorAll("p").forEach(p => {
       const txt = p.textContent.trim();
-      if (txt && !txt.includes("點擊收聽") && !txt.includes("Tap to listen")) {
+      if (txt && !txt.includes("點擊收聽") && !txt.includes("Tap to listen") && !p.querySelector(".tts-status-label")) {
         parts.push(txt);
       }
     });
-    return parts.join("。 ");
+    return prepareSpeechText(parts.join("。 "), currentLang);
+  }
+
+  function startCardSpeechAt(cardEl, key, initialFrac) {
+    if (!("speechSynthesis" in window)) return;
+    const targetKey = key || (cardEl && (cardEl.id || cardEl.getAttribute("data-arch-card"))) || "page";
+
+    stopSpeech();
+    let text = extractCardSpeechText(cardEl);
+    if (!text) {
+      const mainEl = document.querySelector("main");
+      text = prepareSpeechText(mainEl ? mainEl.innerText.slice(0, 1200) : "", currentLang);
+    }
+    const chunks = splitSentences(text, currentLang);
+    if (!chunks.length) return;
+
+    const starts = [0];
+    let total = 0;
+    chunks.forEach(c => {
+      total += c.length;
+      starts.push(total);
+    });
+
+    tts.activeKey = targetKey;
+    tts.activeCard = cardEl;
+    tts.chunks = chunks;
+    tts.chunkStarts = starts;
+    tts.totalChars = Math.max(1, total);
+    tts.estTotalSec = Math.max(10, Math.round(total / charsPerSecond(currentLang)));
+    tts.isPlaying = true;
+    tts.isPaused = false;
+
+    const frac = typeof initialFrac === "number" ? Math.max(0, Math.min(0.99, initialFrac)) : 0;
+    const targetChar = frac * tts.totalChars;
+    let idx = 0;
+    for (let i = 0; i < chunks.length; i++) {
+      if (targetChar >= starts[i] && targetChar < starts[i + 1]) {
+        idx = i;
+        break;
+      }
+    }
+    tts.chunkIdx = idx;
+    tts.elapsed = Math.round(frac * tts.estTotalSec);
+
+    if (cardEl) updateCardAudioUI(cardEl);
+    updateHeaderAudioIcon();
+
+    tts.timer = setInterval(() => {
+      if (tts.isPlaying && !tts.isPaused && !tts.isScrubbing) {
+        const f = computeProgressFraction();
+        tts.elapsed = Math.round(f * tts.estTotalSec);
+        if (tts.activeCard) updateCardAudioUI(tts.activeCard);
+      }
+    }, 250);
+
+    speakNextChunk();
   }
 
   function toggleCardSpeech(cardEl, key) {
@@ -141,6 +285,7 @@
     if (tts.activeKey === targetKey && tts.isPlaying) {
       if (tts.isPaused) {
         tts.isPaused = false;
+        tts.chunkStartedAt = Date.now();
         window.speechSynthesis.resume();
         if (!window.speechSynthesis.speaking) speakNextChunk();
       } else {
@@ -152,34 +297,35 @@
       return;
     }
 
-    stopSpeech();
-    let text = extractCardSpeechText(cardEl);
-    if (!text) {
-      const mainEl = document.querySelector("main");
-      text = mainEl ? mainEl.innerText.slice(0, 1200) : "";
+    startCardSpeechAt(cardEl, key, 0);
+  }
+
+  function seekCardSpeech(cardEl, frac) {
+    const safeFrac = Math.max(0, Math.min(0.99, frac));
+    if (!tts.isPlaying || tts.activeCard !== cardEl) {
+      startCardSpeechAt(cardEl, null, safeFrac);
+      return;
     }
-    const chunks = splitSentences(text, currentLang);
-    if (!chunks.length) return;
-
-    tts.activeKey = targetKey;
-    tts.activeCard = cardEl;
-    tts.chunks = chunks;
-    tts.chunkIdx = 0;
-    tts.elapsed = 0;
-    tts.isPlaying = true;
-    tts.isPaused = false;
-
-    if (cardEl) updateCardAudioUI(cardEl);
-    updateHeaderAudioIcon();
-
-    tts.timer = setInterval(() => {
-      if (tts.isPlaying && !tts.isPaused) {
-        tts.elapsed += 1;
-        if (tts.activeCard) updateCardAudioUI(tts.activeCard);
+    const targetChar = safeFrac * tts.totalChars;
+    let idx = 0;
+    for (let i = 0; i < tts.chunks.length; i++) {
+      if (targetChar >= tts.chunkStarts[i] && targetChar < tts.chunkStarts[i + 1]) {
+        idx = i;
+        break;
       }
-    }, 1000);
+    }
+    tts.utterToken += 1;
+    tts.chunkIdx = idx;
+    tts.chunkStartedAt = Date.now();
+    tts.elapsed = Math.round(safeFrac * tts.estTotalSec);
+    if (cardEl) updateCardAudioUI(cardEl);
 
-    speakNextChunk();
+    if (!tts.isPaused) {
+      window.speechSynthesis.cancel();
+      speakNextChunk();
+    } else {
+      window.speechSynthesis.cancel();
+    }
   }
 
   function cycleSpeechRate(e) {
@@ -190,6 +336,7 @@
       el.textContent = rateStr;
     });
     if (tts.isPlaying && !tts.isPaused) {
+      tts.utterToken += 1;
       window.speechSynthesis.cancel();
       speakNextChunk();
     }
@@ -201,7 +348,9 @@
     const isPaused = isThisActive && tts.isPaused;
     const playIcon = cardEl.querySelector(".tts-play-icon");
     const statusSpan = cardEl.querySelector(".tts-status-label");
-    const durStr = cardEl.getAttribute("data-duration") || "02:30";
+    const durStr = isThisActive && tts.estTotalSec > 0
+      ? formatMMSS(tts.estTotalSec)
+      : (cardEl.getAttribute("data-duration") || "02:30");
 
     if (playIcon) {
       playIcon.textContent = isThisActive && !isPaused ? "pause" : "play_arrow";
@@ -215,6 +364,117 @@
         statusSpan.textContent = `${i18n("audioPlaying")} (${formatMMSS(tts.elapsed)} / ${durStr})`;
       }
     }
+
+    // 更新進度條與目前/總時長
+    const range = cardEl.querySelector(".tts-seek-range");
+    const curEl = cardEl.querySelector(".tts-time-cur");
+    const totEl = cardEl.querySelector(".tts-time-tot");
+    if (range && !tts.isScrubbing) {
+      const frac = isThisActive ? computeProgressFraction() : 0;
+      const pct = Math.round(frac * 1000) / 10;
+      range.value = Math.round(frac * 1000);
+      range.style.background = `linear-gradient(to right, #9e2016 ${pct}%, #e2dcd3 ${pct}%)`;
+    }
+    if (curEl) {
+      curEl.textContent = isThisActive ? formatMMSS(tts.elapsed) : "00:00";
+    }
+    if (totEl) {
+      totEl.textContent = durStr;
+    }
+  }
+
+  function enhanceAudioPlayers() {
+    if (document.getElementById("tts-progress-styles") === null && document.head) {
+      const st = document.createElement("style");
+      st.id = "tts-progress-styles";
+      st.textContent = `
+        .tts-seek-range {
+          -webkit-appearance: none;
+          appearance: none;
+          height: 6px;
+          border-radius: 9999px;
+          outline: none;
+          touch-action: none;
+        }
+        .tts-seek-range::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          appearance: none;
+          width: 14px;
+          height: 14px;
+          border-radius: 9999px;
+          background: #9e2016;
+          border: 2px solid #ffffff;
+          box-shadow: 0 1px 4px rgba(0,0,0,0.28);
+          cursor: pointer;
+          transition: transform 0.12s ease;
+        }
+        .tts-seek-range:active::-webkit-slider-thumb {
+          transform: scale(1.22);
+        }
+        .tts-seek-range::-moz-range-thumb {
+          width: 14px;
+          height: 14px;
+          border-radius: 9999px;
+          background: #9e2016;
+          border: 2px solid #ffffff;
+          box-shadow: 0 1px 4px rgba(0,0,0,0.28);
+          cursor: pointer;
+        }
+      `;
+      document.head.appendChild(st);
+    }
+
+    document.querySelectorAll(".tts-trigger-btn").forEach(btn => {
+      const box = btn.closest(".rounded-2xl, .rounded-xl");
+      const card = btn.closest(".deity-card, .arch-card");
+      if (!box || !card || box.querySelector(".tts-progress-row")) return;
+
+      const durStr = card.getAttribute("data-duration") || "02:30";
+      const existingChildren = Array.from(box.children);
+
+      const topRow = document.createElement("div");
+      topRow.className = "flex items-center justify-between gap-2 w-full";
+      existingChildren.forEach(ch => topRow.appendChild(ch));
+
+      box.classList.remove("items-center", "justify-between");
+      box.classList.add("flex-col", "gap-2");
+      box.appendChild(topRow);
+
+      const progRow = document.createElement("div");
+      progRow.className = "tts-progress-row flex items-center gap-2 w-full pt-0.5";
+      progRow.innerHTML = `
+        <span class="tts-time-cur font-label-sm text-[11px] tabular-nums text-on-surface-variant w-9 shrink-0">00:00</span>
+        <input type="range" min="0" max="1000" value="0" aria-label="語音導覽播放進度" class="tts-seek-range flex-1 cursor-pointer" style="background: linear-gradient(to right, #9e2016 0%, #e2dcd3 0%);" />
+        <span class="tts-time-tot font-label-sm text-[11px] tabular-nums text-on-surface-variant w-9 text-right shrink-0">${durStr}</span>
+      `;
+      box.appendChild(progRow);
+
+      const range = progRow.querySelector(".tts-seek-range");
+      const curEl = progRow.querySelector(".tts-time-cur");
+
+      const stopBubble = e => e.stopPropagation();
+      ["pointerdown", "mousedown", "touchstart", "click"].forEach(ev => {
+        progRow.addEventListener(ev, stopBubble);
+      });
+
+      range.addEventListener("input", e => {
+        e.stopPropagation();
+        tts.isScrubbing = true;
+        const frac = Math.max(0, Math.min(1, Number(range.value) / 1000));
+        const pct = Math.round(frac * 1000) / 10;
+        range.style.background = `linear-gradient(to right, #9e2016 ${pct}%, #e2dcd3 ${pct}%)`;
+        if (tts.activeCard === card && tts.estTotalSec > 0 && curEl) {
+          curEl.textContent = formatMMSS(Math.round(frac * tts.estTotalSec));
+        }
+      });
+
+      range.addEventListener("change", e => {
+        e.stopPropagation();
+        const frac = Math.max(0, Math.min(1, Number(range.value) / 1000));
+        tts.isScrubbing = false;
+        seekCardSpeech(card, frac);
+      });
+    });
   }
 
   function updateHeaderAudioIcon() {
@@ -963,6 +1223,9 @@
         if (l) applyLanguageToPage(l, true);
       };
     });
+
+    // 動態為每張導覽卡片的語音播放器加上進度條與拖曳跳轉功能
+    enhanceAudioPlayers();
 
     // 綁定卡片內語音播放與語速按鈕
     document.querySelectorAll(".tts-trigger-btn").forEach(btn => {
