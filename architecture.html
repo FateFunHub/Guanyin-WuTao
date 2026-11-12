@@ -125,6 +125,12 @@
       }
     };
   </script>
+  <style>
+    /* 建築導覽清單未點入專注模式前，不顯示卡片內的語音導覽列 */
+    article.arch-card:not(.focused-card) > div > div:has(.tts-trigger-btn) {
+      display: none;
+    }
+  </style>
 </head>
 <body data-page="architecture" class="bg-surface-dim font-body-md text-body-md text-on-surface antialiased min-h-screen">
 <!-- Outer responsive shell container -->
