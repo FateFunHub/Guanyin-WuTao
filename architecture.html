@@ -255,7 +255,39 @@
 <span data-i18n="planDrag">可拖曳平移檢視全區</span>
 </div>
 </div>
-<img alt="大觀音亭興濟宮 全區平面配置圖" class="w-full h-full object-cover object-center select-none pointer-events-none" id="plan-image" src="./images/stitch_plan.jpg" style="transform-origin: center center; transform: translate(0px, 0px) scale(1); will-change: transform;"/>
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="relative h-full aspect-square shrink-0 select-none pointer-events-none" id="plan-transform-layer" style="transform-origin: center center; transform: translate(0px, 0px) scale(1); will-change: transform;">
+<img alt="大觀音亭興濟宮 全區平面配置圖" class="w-full h-full object-cover object-center select-none pointer-events-none" id="plan-image" src="./images/stitch_plan.jpg"/>
+<!-- 平面圖空間與神尊位置標籤（隨縮放平移同步移動） -->
+<div class="absolute inset-0 pointer-events-none" id="plan-labels-layer">
+  <!-- 左側：大觀音亭（後殿大雄寶殿） -->
+  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-semibold text-[7.5px] leading-tight px-1 py-0.5 rounded-sm shadow-sm border border-[#8d706c]/35 whitespace-nowrap" style="left: 10%; top: 7.5%;">境主城隍</span>
+  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-semibold text-[7.5px] leading-tight px-1 py-0.5 rounded-sm shadow-sm border border-[#8d706c]/35 whitespace-nowrap" style="left: 25.5%; top: 7.5%;">三寶佛</span>
+  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-semibold text-[7.5px] leading-tight px-1 py-0.5 rounded-sm shadow-sm border border-[#8d706c]/35 whitespace-nowrap" style="left: 33.5%; top: 7.2%;">地藏菩薩</span>
+  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-bold text-[10.5px] leading-tight px-2 py-0.5 rounded shadow-md border border-[#8d706c]/40 whitespace-nowrap" style="left: 21%; top: 14%;">大雄寶殿</span>
+  <!-- 左側：大觀音亭（正殿觀音殿） -->
+  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-semibold text-[7.5px] leading-tight px-1 py-0.5 rounded-sm shadow-sm border border-[#8d706c]/35 whitespace-nowrap" style="left: 14.5%; top: 43.8%;">註生娘娘</span>
+  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-semibold text-[7.5px] leading-tight px-1 py-0.5 rounded-sm shadow-sm border border-[#8d706c]/35 whitespace-nowrap" style="left: 22%; top: 45.5%;">觀音菩薩</span>
+  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-semibold text-[7.5px] leading-tight px-1 py-0.5 rounded-sm shadow-sm border border-[#8d706c]/35 whitespace-nowrap" style="left: 31%; top: 43.8%;">月老</span>
+  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-bold text-[10.5px] leading-tight px-2 py-0.5 rounded shadow-md border border-[#8d706c]/40 whitespace-nowrap" style="left: 22%; top: 56.5%;">觀音殿</span>
+  <!-- 中央：官廳 -->
+  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-bold text-[10.5px] leading-tight px-2 py-0.5 rounded shadow-md border border-[#8d706c]/40 whitespace-nowrap" style="left: 50%; top: 16%;">解籤處</span>
+  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-bold text-[10.5px] leading-tight px-2 py-0.5 rounded shadow-md border border-[#8d706c]/40 whitespace-nowrap" style="left: 50%; top: 52.5%;">服務台</span>
+  <!-- 右側：興濟宮（後殿聖父母殿） -->
+  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-semibold text-[7.5px] leading-tight px-1 py-0.5 rounded-sm shadow-sm border border-[#8d706c]/35 whitespace-nowrap" style="left: 66.5%; top: 9.2%;">文昌帝君</span>
+  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-semibold text-[7.5px] leading-tight px-1 py-0.5 rounded-sm shadow-sm border border-[#8d706c]/35 whitespace-nowrap" style="left: 74.2%; top: 8.2%;">文衡聖帝</span>
+  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-semibold text-[7.5px] leading-tight px-1 py-0.5 rounded-sm shadow-sm border border-[#8d706c]/35 whitespace-nowrap" style="left: 78.5%; top: 10.3%;">玉華大仙</span>
+  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-semibold text-[7.5px] leading-tight px-1 py-0.5 rounded-sm shadow-sm border border-[#8d706c]/35 whitespace-nowrap" style="left: 82.8%; top: 8.2%;">協成元君</span>
+  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-semibold text-[7.5px] leading-tight px-1 py-0.5 rounded-sm shadow-sm border border-[#8d706c]/35 whitespace-nowrap" style="left: 90%; top: 9.2%;">太歲星君</span>
+  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-bold text-[10.5px] leading-tight px-2 py-0.5 rounded shadow-md border border-[#8d706c]/40 whitespace-nowrap" style="left: 78.5%; top: 15.2%;">聖父母殿</span>
+  <!-- 右側：興濟宮（正殿保生大帝殿） -->
+  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-semibold text-[7.5px] leading-tight px-1 py-0.5 rounded-sm shadow-sm border border-[#8d706c]/35 whitespace-nowrap" style="left: 70.5%; top: 43.8%;">福德正神</span>
+  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-semibold text-[7.5px] leading-tight px-1 py-0.5 rounded-sm shadow-sm border border-[#8d706c]/35 whitespace-nowrap" style="left: 78.5%; top: 42.2%;">保生大帝</span>
+  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-semibold text-[7.5px] leading-tight px-1 py-0.5 rounded-sm shadow-sm border border-[#8d706c]/35 whitespace-nowrap" style="left: 86.5%; top: 43.8%;">中壇元帥</span>
+  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-bold text-[10.5px] leading-tight px-2 py-0.5 rounded shadow-md border border-[#8d706c]/40 whitespace-nowrap" style="left: 78.5%; top: 55.5%;">保生大帝殿</span>
+</div>
+</div>
+</div>
 <div class="absolute inset-0 bg-gradient-to-t from-on-surface/90 via-transparent to-transparent flex flex-col justify-end p-space-md pointer-events-none z-10">
 <div class="flex flex-wrap gap-2 pointer-events-auto items-center">
 <button class="plan-focus-chip inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-label-sm font-label-sm bg-surface/95 text-primary shadow-md backdrop-blur border border-outline-variant/30 active:scale-95 transition-all hover:bg-white" id="btn-focus-guanyin" onclick="event.stopPropagation(); focusPlanSection('guanyin')" type="button">
@@ -1019,13 +1051,16 @@
 
     function clampPlanPosition() {
       var viewport = document.getElementById('plan-viewport');
+      var layer = document.getElementById('plan-transform-layer');
       if (!viewport) return;
       var rect = viewport.getBoundingClientRect();
       var w = rect.width;
       var h = rect.height;
+      var layerW = layer ? layer.offsetWidth : w;
+      var layerH = layer ? layer.offsetHeight : h;
 
-      var maxPanX = Math.max(0, (w * (planState.scale - 1)) / 2);
-      var maxPanY = Math.max(0, (h * (planState.scale - 1)) / 2);
+      var maxPanX = Math.max(0, (layerW * planState.scale - w) / 2);
+      var maxPanY = Math.max(0, (layerH * planState.scale - h) / 2);
 
       if (planState.x > maxPanX) planState.x = maxPanX;
       if (planState.x < -maxPanX) planState.x = -maxPanX;
@@ -1034,18 +1069,18 @@
     }
 
     function applyPlanTransform(animate) {
-      var img = document.getElementById('plan-image');
-      if (!img) return;
+      var layer = document.getElementById('plan-transform-layer') || document.getElementById('plan-image');
+      if (!layer) return;
 
       var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (animate && !prefersReduced) {
-        img.style.transition = 'transform 0.45s cubic-bezier(0.2, 0.8, 0.25, 1)';
+        layer.style.transition = 'transform 0.45s cubic-bezier(0.2, 0.8, 0.25, 1)';
       } else {
-        img.style.transition = 'none';
+        layer.style.transition = 'none';
       }
 
       clampPlanPosition();
-      img.style.transform = 'translate(' + planState.x + 'px, ' + planState.y + 'px) scale(' + planState.scale + ')';
+      layer.style.transform = 'translate(' + planState.x + 'px, ' + planState.y + 'px) scale(' + planState.scale + ')';
     }
 
     function zoomInPlan(e) {
@@ -1174,8 +1209,8 @@
         planState.startY = e.clientY - planState.y;
         planState.currentFocus = null;
         resetFocusChipsVisual();
-        var img = document.getElementById('plan-image');
-        if (img) img.style.transition = 'none';
+        var layer = document.getElementById('plan-transform-layer') || document.getElementById('plan-image');
+        if (layer) layer.style.transition = 'none';
       });
 
       window.addEventListener('mousemove', function(e) {
@@ -1203,8 +1238,8 @@
           planState.isDragging = true;
           planState.startX = e.touches[0].clientX - planState.x;
           planState.startY = e.touches[0].clientY - planState.y;
-          var img = document.getElementById('plan-image');
-          if (img) img.style.transition = 'none';
+          var layer = document.getElementById('plan-transform-layer') || document.getElementById('plan-image');
+          if (layer) layer.style.transition = 'none';
         } else if (e.touches.length === 2) {
           planState.isDragging = false;
           planState.initialDistance = getDistance(e.touches);
