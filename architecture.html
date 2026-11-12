@@ -258,33 +258,33 @@
 <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
 <div class="relative h-full aspect-square shrink-0 select-none pointer-events-none" id="plan-transform-layer" style="transform-origin: center center; transform: translate(0px, 0px) scale(1); will-change: transform;">
 <img alt="大觀音亭興濟宮 全區平面配置圖" class="w-full h-full object-cover object-center select-none pointer-events-none" id="plan-image" src="./images/stitch_plan.jpg"/>
-<!-- 平面圖空間與神尊位置標籤（隨縮放平移同步移動） -->
+<!-- 平面圖空間與神尊位置標籤（半透明浮動灰底、可點擊跳轉並隨縮放平移同步移動） -->
 <div class="absolute inset-0 pointer-events-none" id="plan-labels-layer">
   <!-- 左側：大觀音亭（後殿大雄寶殿） -->
-  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-semibold text-[7.5px] leading-tight px-1 py-0.5 rounded-sm shadow-sm border border-[#8d706c]/35 whitespace-nowrap" style="left: 10%; top: 7.5%;">境主城隍</span>
-  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-semibold text-[7.5px] leading-tight px-1 py-0.5 rounded-sm shadow-sm border border-[#8d706c]/35 whitespace-nowrap" style="left: 25.5%; top: 7.5%;">三寶佛</span>
-  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-semibold text-[7.5px] leading-tight px-1 py-0.5 rounded-sm shadow-sm border border-[#8d706c]/35 whitespace-nowrap" style="left: 33.5%; top: 7.2%;">地藏菩薩</span>
-  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-bold text-[10.5px] leading-tight px-2 py-0.5 rounded shadow-md border border-[#8d706c]/40 whitespace-nowrap" style="left: 21%; top: 14%;">大雄寶殿</span>
+  <a href="./deities.html#GY-08" class="plan-map-tag absolute -translate-x-1/2 -translate-y-1/2 bg-neutral-800/75 hover:bg-primary/90 text-white backdrop-blur-[2px] font-semibold text-[7.5px] leading-tight px-1.5 py-0.5 rounded-md shadow-[0_3px_8px_rgba(0,0,0,0.38)] border border-white/25 hover:scale-110 active:scale-95 transition-all pointer-events-auto cursor-pointer whitespace-nowrap" style="left: 10%; top: 7.5%;">境主城隍</a>
+  <a href="./deities.html#GY-06" class="plan-map-tag absolute -translate-x-1/2 -translate-y-1/2 bg-neutral-800/75 hover:bg-primary/90 text-white backdrop-blur-[2px] font-semibold text-[7.5px] leading-tight px-1.5 py-0.5 rounded-md shadow-[0_3px_8px_rgba(0,0,0,0.38)] border border-white/25 hover:scale-110 active:scale-95 transition-all pointer-events-auto cursor-pointer whitespace-nowrap" style="left: 25.5%; top: 7.5%;">三寶佛</a>
+  <a href="./deities.html#GY-07" class="plan-map-tag absolute -translate-x-1/2 -translate-y-1/2 bg-neutral-800/75 hover:bg-primary/90 text-white backdrop-blur-[2px] font-semibold text-[7.5px] leading-tight px-1.5 py-0.5 rounded-md shadow-[0_3px_8px_rgba(0,0,0,0.38)] border border-white/25 hover:scale-110 active:scale-95 transition-all pointer-events-auto cursor-pointer whitespace-nowrap" style="left: 33.5%; top: 7.2%;">地藏菩薩</a>
+  <a href="./deities.html#GY-06" class="plan-map-tag absolute -translate-x-1/2 -translate-y-1/2 bg-neutral-800/80 hover:bg-primary/95 text-white backdrop-blur-[2px] font-bold text-[10.5px] leading-tight px-2 py-0.5 rounded-lg shadow-[0_4px_12px_rgba(0,0,0,0.42)] border border-white/30 hover:scale-105 active:scale-95 transition-all pointer-events-auto cursor-pointer whitespace-nowrap" style="left: 21%; top: 14%;">大雄寶殿</a>
   <!-- 左側：大觀音亭（正殿觀音殿） -->
-  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-semibold text-[7.5px] leading-tight px-1 py-0.5 rounded-sm shadow-sm border border-[#8d706c]/35 whitespace-nowrap" style="left: 14.5%; top: 43.8%;">註生娘娘</span>
-  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-semibold text-[7.5px] leading-tight px-1 py-0.5 rounded-sm shadow-sm border border-[#8d706c]/35 whitespace-nowrap" style="left: 22%; top: 45.5%;">觀音菩薩</span>
-  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-semibold text-[7.5px] leading-tight px-1 py-0.5 rounded-sm shadow-sm border border-[#8d706c]/35 whitespace-nowrap" style="left: 31%; top: 43.8%;">月老</span>
-  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-bold text-[10.5px] leading-tight px-2 py-0.5 rounded shadow-md border border-[#8d706c]/40 whitespace-nowrap" style="left: 22%; top: 56.5%;">觀音殿</span>
+  <a href="./deities.html#GY-05" class="plan-map-tag absolute -translate-x-1/2 -translate-y-1/2 bg-neutral-800/75 hover:bg-primary/90 text-white backdrop-blur-[2px] font-semibold text-[7.5px] leading-tight px-1.5 py-0.5 rounded-md shadow-[0_3px_8px_rgba(0,0,0,0.38)] border border-white/25 hover:scale-110 active:scale-95 transition-all pointer-events-auto cursor-pointer whitespace-nowrap" style="left: 14.5%; top: 43.8%;">註生娘娘</a>
+  <a href="./deities.html#GY-03" class="plan-map-tag absolute -translate-x-1/2 -translate-y-1/2 bg-neutral-800/75 hover:bg-primary/90 text-white backdrop-blur-[2px] font-semibold text-[7.5px] leading-tight px-1.5 py-0.5 rounded-md shadow-[0_3px_8px_rgba(0,0,0,0.38)] border border-white/25 hover:scale-110 active:scale-95 transition-all pointer-events-auto cursor-pointer whitespace-nowrap" style="left: 22%; top: 45.5%;">觀音菩薩</a>
+  <a href="./deities.html#GY-04" class="plan-map-tag absolute -translate-x-1/2 -translate-y-1/2 bg-neutral-800/75 hover:bg-primary/90 text-white backdrop-blur-[2px] font-semibold text-[7.5px] leading-tight px-1.5 py-0.5 rounded-md shadow-[0_3px_8px_rgba(0,0,0,0.38)] border border-white/25 hover:scale-110 active:scale-95 transition-all pointer-events-auto cursor-pointer whitespace-nowrap" style="left: 31%; top: 43.8%;">月老</a>
+  <a href="./deities.html#GY-03" class="plan-map-tag absolute -translate-x-1/2 -translate-y-1/2 bg-neutral-800/80 hover:bg-primary/95 text-white backdrop-blur-[2px] font-bold text-[10.5px] leading-tight px-2 py-0.5 rounded-lg shadow-[0_4px_12px_rgba(0,0,0,0.42)] border border-white/30 hover:scale-105 active:scale-95 transition-all pointer-events-auto cursor-pointer whitespace-nowrap" style="left: 22%; top: 56.5%;">觀音殿</a>
   <!-- 中央：官廳 -->
-  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-bold text-[10.5px] leading-tight px-2 py-0.5 rounded shadow-md border border-[#8d706c]/40 whitespace-nowrap" style="left: 50%; top: 16%;">解籤處</span>
-  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-bold text-[10.5px] leading-tight px-2 py-0.5 rounded shadow-md border border-[#8d706c]/40 whitespace-nowrap" style="left: 50%; top: 52.5%;">服務台</span>
+  <a href="#oracle" class="plan-map-tag absolute -translate-x-1/2 -translate-y-1/2 bg-neutral-800/80 hover:bg-primary/95 text-white backdrop-blur-[2px] font-bold text-[10.5px] leading-tight px-2 py-0.5 rounded-lg shadow-[0_4px_12px_rgba(0,0,0,0.42)] border border-white/30 hover:scale-105 active:scale-95 transition-all pointer-events-auto cursor-pointer whitespace-nowrap" style="left: 50%; top: 16%;">解籤處</a>
+  <a href="#hall" class="plan-map-tag absolute -translate-x-1/2 -translate-y-1/2 bg-neutral-800/80 hover:bg-primary/95 text-white backdrop-blur-[2px] font-bold text-[10.5px] leading-tight px-2 py-0.5 rounded-lg shadow-[0_4px_12px_rgba(0,0,0,0.42)] border border-white/30 hover:scale-105 active:scale-95 transition-all pointer-events-auto cursor-pointer whitespace-nowrap" style="left: 50%; top: 52.5%;">服務台</a>
   <!-- 右側：興濟宮（後殿聖父母殿） -->
-  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-semibold text-[7.5px] leading-tight px-1 py-0.5 rounded-sm shadow-sm border border-[#8d706c]/35 whitespace-nowrap" style="left: 66.5%; top: 9.2%;">文昌帝君</span>
-  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-semibold text-[7.5px] leading-tight px-1 py-0.5 rounded-sm shadow-sm border border-[#8d706c]/35 whitespace-nowrap" style="left: 74.2%; top: 8.2%;">文衡聖帝</span>
-  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-semibold text-[7.5px] leading-tight px-1 py-0.5 rounded-sm shadow-sm border border-[#8d706c]/35 whitespace-nowrap" style="left: 78.5%; top: 10.3%;">玉華大仙</span>
-  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-semibold text-[7.5px] leading-tight px-1 py-0.5 rounded-sm shadow-sm border border-[#8d706c]/35 whitespace-nowrap" style="left: 82.8%; top: 8.2%;">協成元君</span>
-  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-semibold text-[7.5px] leading-tight px-1 py-0.5 rounded-sm shadow-sm border border-[#8d706c]/35 whitespace-nowrap" style="left: 90%; top: 9.2%;">太歲星君</span>
-  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-bold text-[10.5px] leading-tight px-2 py-0.5 rounded shadow-md border border-[#8d706c]/40 whitespace-nowrap" style="left: 78.5%; top: 15.2%;">聖父母殿</span>
+  <a href="./deities.html#XJ-06" class="plan-map-tag absolute -translate-x-1/2 -translate-y-1/2 bg-neutral-800/75 hover:bg-primary/90 text-white backdrop-blur-[2px] font-semibold text-[7.5px] leading-tight px-1.5 py-0.5 rounded-md shadow-[0_3px_8px_rgba(0,0,0,0.38)] border border-white/25 hover:scale-110 active:scale-95 transition-all pointer-events-auto cursor-pointer whitespace-nowrap" style="left: 66.5%; top: 9.2%;">文昌帝君</a>
+  <a href="./deities.html#XJ-04" class="plan-map-tag absolute -translate-x-1/2 -translate-y-1/2 bg-neutral-800/75 hover:bg-primary/90 text-white backdrop-blur-[2px] font-semibold text-[7.5px] leading-tight px-1.5 py-0.5 rounded-md shadow-[0_3px_8px_rgba(0,0,0,0.38)] border border-white/25 hover:scale-110 active:scale-95 transition-all pointer-events-auto cursor-pointer whitespace-nowrap" style="left: 74.2%; top: 8.2%;">文衡聖帝</a>
+  <a href="./deities.html#XJ-04" class="plan-map-tag absolute -translate-x-1/2 -translate-y-1/2 bg-neutral-800/75 hover:bg-primary/90 text-white backdrop-blur-[2px] font-semibold text-[7.5px] leading-tight px-1.5 py-0.5 rounded-md shadow-[0_3px_8px_rgba(0,0,0,0.38)] border border-white/25 hover:scale-110 active:scale-95 transition-all pointer-events-auto cursor-pointer whitespace-nowrap" style="left: 78.5%; top: 10.3%;">玉華大仙</a>
+  <a href="./deities.html#XJ-04" class="plan-map-tag absolute -translate-x-1/2 -translate-y-1/2 bg-neutral-800/75 hover:bg-primary/90 text-white backdrop-blur-[2px] font-semibold text-[7.5px] leading-tight px-1.5 py-0.5 rounded-md shadow-[0_3px_8px_rgba(0,0,0,0.38)] border border-white/25 hover:scale-110 active:scale-95 transition-all pointer-events-auto cursor-pointer whitespace-nowrap" style="left: 82.8%; top: 8.2%;">協成元君</a>
+  <a href="./deities.html#XJ-05" class="plan-map-tag absolute -translate-x-1/2 -translate-y-1/2 bg-neutral-800/75 hover:bg-primary/90 text-white backdrop-blur-[2px] font-semibold text-[7.5px] leading-tight px-1.5 py-0.5 rounded-md shadow-[0_3px_8px_rgba(0,0,0,0.38)] border border-white/25 hover:scale-110 active:scale-95 transition-all pointer-events-auto cursor-pointer whitespace-nowrap" style="left: 90%; top: 9.2%;">太歲星君</a>
+  <a href="./deities.html#XJ-04" class="plan-map-tag absolute -translate-x-1/2 -translate-y-1/2 bg-neutral-800/80 hover:bg-primary/95 text-white backdrop-blur-[2px] font-bold text-[10.5px] leading-tight px-2 py-0.5 rounded-lg shadow-[0_4px_12px_rgba(0,0,0,0.42)] border border-white/30 hover:scale-105 active:scale-95 transition-all pointer-events-auto cursor-pointer whitespace-nowrap" style="left: 78.5%; top: 15.2%;">聖父母殿</a>
   <!-- 右側：興濟宮（正殿保生大帝殿） -->
-  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-semibold text-[7.5px] leading-tight px-1 py-0.5 rounded-sm shadow-sm border border-[#8d706c]/35 whitespace-nowrap" style="left: 70.5%; top: 43.8%;">福德正神</span>
-  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-semibold text-[7.5px] leading-tight px-1 py-0.5 rounded-sm shadow-sm border border-[#8d706c]/35 whitespace-nowrap" style="left: 78.5%; top: 42.2%;">保生大帝</span>
-  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-semibold text-[7.5px] leading-tight px-1 py-0.5 rounded-sm shadow-sm border border-[#8d706c]/35 whitespace-nowrap" style="left: 86.5%; top: 43.8%;">中壇元帥</span>
-  <span class="absolute -translate-x-1/2 -translate-y-1/2 bg-white/95 text-[#1b1c1a] font-bold text-[10.5px] leading-tight px-2 py-0.5 rounded shadow-md border border-[#8d706c]/40 whitespace-nowrap" style="left: 78.5%; top: 55.5%;">保生大帝殿</span>
+  <a href="./deities.html#XJ-03" class="plan-map-tag absolute -translate-x-1/2 -translate-y-1/2 bg-neutral-800/75 hover:bg-primary/90 text-white backdrop-blur-[2px] font-semibold text-[7.5px] leading-tight px-1.5 py-0.5 rounded-md shadow-[0_3px_8px_rgba(0,0,0,0.38)] border border-white/25 hover:scale-110 active:scale-95 transition-all pointer-events-auto cursor-pointer whitespace-nowrap" style="left: 70.5%; top: 43.8%;">福德正神</a>
+  <a href="./deities.html#XJ-01" class="plan-map-tag absolute -translate-x-1/2 -translate-y-1/2 bg-neutral-800/75 hover:bg-primary/90 text-white backdrop-blur-[2px] font-semibold text-[7.5px] leading-tight px-1.5 py-0.5 rounded-md shadow-[0_3px_8px_rgba(0,0,0,0.38)] border border-white/25 hover:scale-110 active:scale-95 transition-all pointer-events-auto cursor-pointer whitespace-nowrap" style="left: 78.5%; top: 42.2%;">保生大帝</a>
+  <a href="./deities.html#XJ-02" class="plan-map-tag absolute -translate-x-1/2 -translate-y-1/2 bg-neutral-800/75 hover:bg-primary/90 text-white backdrop-blur-[2px] font-semibold text-[7.5px] leading-tight px-1.5 py-0.5 rounded-md shadow-[0_3px_8px_rgba(0,0,0,0.38)] border border-white/25 hover:scale-110 active:scale-95 transition-all pointer-events-auto cursor-pointer whitespace-nowrap" style="left: 86.5%; top: 43.8%;">中壇元帥</a>
+  <a href="./deities.html#XJ-01" class="plan-map-tag absolute -translate-x-1/2 -translate-y-1/2 bg-neutral-800/80 hover:bg-primary/95 text-white backdrop-blur-[2px] font-bold text-[10.5px] leading-tight px-2 py-0.5 rounded-lg shadow-[0_4px_12px_rgba(0,0,0,0.42)] border border-white/30 hover:scale-105 active:scale-95 transition-all pointer-events-auto cursor-pointer whitespace-nowrap" style="left: 78.5%; top: 55.5%;">保生大帝殿</a>
 </div>
 </div>
 </div>
@@ -1202,9 +1202,14 @@
         updateStatusDragNotice();
       }, { passive: false });
 
+      var dragDownX = 0, dragDownY = 0, didDrag = false;
+
       viewport.addEventListener('mousedown', function(e) {
         if (e.target.closest('button')) return;
         planState.isDragging = true;
+        didDrag = false;
+        dragDownX = e.clientX;
+        dragDownY = e.clientY;
         planState.startX = e.clientX - planState.x;
         planState.startY = e.clientY - planState.y;
         planState.currentFocus = null;
@@ -1215,6 +1220,7 @@
 
       window.addEventListener('mousemove', function(e) {
         if (!planState.isDragging) return;
+        if (Math.hypot(e.clientX - dragDownX, e.clientY - dragDownY) > 6) didDrag = true;
         planState.x = e.clientX - planState.startX;
         planState.y = e.clientY - planState.startY;
         applyPlanTransform(false);
@@ -1225,6 +1231,13 @@
         planState.isDragging = false;
         applyPlanTransform(true);
       });
+
+      viewport.addEventListener('click', function(e) {
+        if (didDrag && e.target.closest('a.plan-map-tag')) {
+          e.preventDefault();
+          didDrag = false;
+        }
+      }, true);
 
       function getDistance(touches) {
         var dx = touches[0].clientX - touches[1].clientX;
