@@ -730,6 +730,12 @@
     if (typeof window.refreshRouteMapI18n === "function") {
       window.refreshRouteMapI18n();
     }
+
+    // 連動首頁 3D 全區視窗 (gate.html) 切換語言
+    const gateIframe = document.getElementById("gate-iframe");
+    if (gateIframe && gateIframe.contentWindow) {
+      gateIframe.contentWindow.postMessage({ type: "setLang", lang }, "*");
+    }
   }
 
   function setTextWithZhCache(el, newText, lang) {
@@ -1315,6 +1321,11 @@
       const sendGate = msg => {
         if (gateIframe.contentWindow) gateIframe.contentWindow.postMessage(msg, "*");
       };
+
+      // gate.html 載入完成後同步當前語言
+      gateIframe.addEventListener("load", () => {
+        sendGate({ type: "setLang", lang: currentLang });
+      });
       const btnSpin = document.getElementById("btn-spin");
       const btnCutaway = document.getElementById("btn-cutaway");
       const btnReset = document.getElementById("btn-reset");
