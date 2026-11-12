@@ -661,7 +661,9 @@
     // 3. 更新含有 [data-i18n] 屬性的元素
     document.querySelectorAll("[data-i18n]").forEach(el => {
       const k = el.getAttribute("data-i18n");
-      if (k) el.textContent = i18n(k);
+      if (!k) return;
+      const val = i18n(k);
+      if (val && val !== k) el.textContent = val;
     });
 
     // 4. 針對各頁面更新卡片內容
