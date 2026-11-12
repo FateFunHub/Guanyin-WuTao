@@ -54,7 +54,7 @@
   }
   .pin .stem{
     width:1.6px;
-    height:var(--stem-h,95px);
+    height:var(--stem-h,48px);
     background:linear-gradient(180deg,#e38852 0%,rgba(227,136,82,.75) 85%,rgba(227,136,82,.2) 100%);
     pointer-events:none;
   }
@@ -729,10 +729,17 @@ function addChibiVisitor({ x, y = 0.74, z, rotY = 0, scale = 0.516, shirtCol = 0
   p.rotation.y = rotY;
   p.scale.set(scale, scale, scale);
   visitorsGroup.add(p);
-  // 雙腿
+  // 雙腿（存入 userData 供行走擺動動畫）
+  const legs = [];
   for (const lx of [-0.22, 0.22]) {
-    add(Cyl(0.15, 0.14, 0.75, 6), M(0x1f2229), lx, 0.38, 0, p);
+    const legPivot = new THREE.Group();
+    legPivot.position.set(lx, 0.72, 0);
+    p.add(legPivot);
+    add(Cyl(0.15, 0.14, 0.75, 6), M(0x1f2229), 0, -0.34, 0, legPivot);
+    legs.push(legPivot);
   }
+  p.userData.legs = legs;
+  p.userData.baseY = y;
   // 身體與背包
   add(Cyl(0.45, 0.52, 1.25, 8), M(shirtCol), 0, 1.25, 0, p);
   add(B(0.55, 0.65, 0.32), M(0x3a68b8), 0, 1.3, 0.38, p);
@@ -746,11 +753,26 @@ function addChibiVisitor({ x, y = 0.74, z, rotY = 0, scale = 0.516, shirtCol = 0
     const hat = add(Cyl(0.68, 0.68, 0.28, 10), M(hatCol), 0, 2.78, 0, p);
     hat.rotation.x = -0.12;
   }
+  return p;
 }
-// 對應 complex.glb 視口前景的三位參觀者（最新精確座標與等比縮放 scale: 0.516）
-addChibiVisitor({ x: 0.46,   y: 0.74, z: 15.89, rotY: 0.075, scale: 0.516, shirtCol: 0xdbe2f0, hasBun: true, name: "Visitor_Girl_Bun" });
-addChibiVisitor({ x: -0.81,  y: 0.74, z: 17.33, rotY: -0.05, scale: 0.516, shirtCol: 0x4568a8, hatCol: 0x3878a8, name: "Visitor_Blue_Hat" });
-addChibiVisitor({ x: -10.40, y: 0.74, z: 15.11, rotY: -0.27, scale: 0.516, shirtCol: 0x7c5eb8, hatCol: 0x3878a8, name: "Visitor_Purple_Coat" });
+
+const animatedWalkers = [];
+function registerWalker(mesh, waypoints, speed = 1.35, phaseOffset = 0) {
+  animatedWalkers.push({ mesh, waypoints, speed, wpIdx: 1, phase: phaseOffset });
+}
+
+// 對應 complex.glb 視口前景的三位參觀者 + 園區漫步遊客（可於廟埕與周邊自由走動）
+const vGirl = addChibiVisitor({ x: 0.46,   y: 0.74, z: 15.89, rotY: 0.075, scale: 0.516, shirtCol: 0xdbe2f0, hasBun: true, name: "Visitor_Girl_Bun" });
+const vBlue = addChibiVisitor({ x: -0.81,  y: 0.74, z: 17.33, rotY: -0.05, scale: 0.516, shirtCol: 0x4568a8, hatCol: 0x3878a8, name: "Visitor_Blue_Hat" });
+const vPurp = addChibiVisitor({ x: -10.40, y: 0.74, z: 15.11, rotY: -0.27, scale: 0.516, shirtCol: 0x7c5eb8, hatCol: 0x3878a8, name: "Visitor_Purple_Coat" });
+const vYel  = addChibiVisitor({ x: 9.20,   y: 0.74, z: 14.20, rotY: 1.2,   scale: 0.516, shirtCol: 0xe8b84b, hasBun: true, name: "Visitor_Yellow_Shirt" });
+const vTeal = addChibiVisitor({ x: 17.80,  y: 0.59, z: 8.50,  rotY: 0,     scale: 0.516, shirtCol: 0x4ea898, hatCol: 0x2c4a6e, name: "Visitor_East_Walkway" });
+
+registerWalker(vGirl, [[0.46, 15.89], [6.8, 15.2], [9.5, 12.2], [2.4, 11.8], [-3.2, 14.5]], 1.25, 0.0);
+registerWalker(vBlue, [[-0.81, 17.33], [-5.2, 16.8], [-3.5, 12.4], [4.5, 12.6], [7.2, 16.5]], 1.35, 1.7);
+registerWalker(vPurp, [[-10.40, 15.11], [-13.2, 16.2], [-11.5, 18.4], [-4.8, 18.2], [-4.5, 15.0]], 1.15, 3.1);
+registerWalker(vYel,  [[9.20, 14.20], [13.5, 13.8], [13.2, 17.6], [6.2, 17.4], [5.8, 13.6]], 1.30, 4.4);
+registerWalker(vTeal, [[17.8, 8.5], [18.5, -2.5], [17.6, -12.0], [19.4, -2.0], [18.8, 10.5]], 1.40, 2.3);
 
 // 6.3 廟埕廣場上的臺灣機車（照片4石階前停放與騎乘的機車群，依 complex.glb 放大 1.36x~1.51x 強化體塊感）
 const scootersGroup = new THREE.Group();
@@ -764,11 +786,15 @@ function addScooter(x, z, rotY, bodyCol = 0xdbe0e6, hasRider = false, scale = 1.
   sc.rotation.y = rotY;
   sc.scale.set(scale, scale, scale);
   scootersGroup.add(sc);
-  // 輪胎
+  // 輪胎（存入 userData 供騎行轉動）
+  const wheels = [];
   for (const wz of [-0.48, 0.48]) {
     const w = add(Cyl(0.22, 0.22, 0.14, 8), M(0x25282c), 0, 0.22, wz, sc);
     w.rotation.z = Math.PI / 2;
+    wheels.push(w);
   }
+  sc.userData.wheels = wheels;
+  sc.userData.baseY = 0.75;
   // 車身與坐墊
   add(B(0.42, 0.38, 0.95), M(bodyCol), 0, 0.44, -0.05, sc);
   add(B(0.38, 0.14, 0.62), M(0x2b2d30), 0, 0.66, -0.18, sc);
@@ -783,11 +809,22 @@ function addScooter(x, z, rotY, bodyCol = 0xdbe0e6, hasRider = false, scale = 1.
     add(new THREE.SphereGeometry(0.24, 7, 6), M(0xffe0c2), 0, 1.45, -0.1, sc);
     add(new THREE.SphereGeometry(0.27, 7, 5, 0, Math.PI * 2, 0, Math.PI * 0.65), M(0x3a485e), 0, 1.48, -0.1, sc);
   }
+  return sc;
 }
-// 依照最新 complex.glb 精確配置：廟埕斜停白、銀 2 輛速克達 (1.363x) + 1 輛騎行騎士 (1.509x)
+
+const animatedScooters = [];
+function registerScooter(mesh, waypoints, speed = 4.2) {
+  animatedScooters.push({ mesh, waypoints, speed, wpIdx: 1 });
+}
+
+// 依照最新 complex.glb 精確配置：廟埕斜停白、銀 2 輛停放速克達 + 2 輛騎行經過的騎士機車
 addScooter(-12.57, 12.35, 0.45,  0xdfe4ea, false, 1.363, "Scooter_White_Parked");
 addScooter(-6.94,  13.09, 0.35,  0xc8cfd8, false, 1.363, "Scooter_Silver_Parked");
-addScooter(0.25,   12.38, -1.25, 0x8d99a8, true,  1.509, "Scooter_With_Rider");
+const scRider1 = addScooter(-14.2, 18.2, 1.57, 0x8d99a8, true, 1.509, "Scooter_With_Rider");
+const scRider2 = addScooter(14.5,  15.8, -1.57, 0xc95a42, true, 1.45,  "Scooter_Passing_Red");
+
+registerScooter(scRider1, [[-14.2, 18.2], [14.2, 18.2], [16.8, 16.5], [16.8, 12.0], [14.2, 14.8], [-3.8, 14.8], [-14.2, 16.2]], 4.4);
+registerScooter(scRider2, [[14.5, 16.2], [-4.5, 16.2], [-14.0, 17.6], [-14.0, 19.2], [14.5, 19.2], [17.2, 17.8]], 5.0);
 
 
 // 6.5 園區外圍低多邊形樹木
@@ -829,7 +866,7 @@ const PINS_DATA = [
     title: '大觀音亭 ‧ 三川殿燕尾脊',
     desc: '創建於明鄭永曆32年（1678年），三川殿屋脊採閩南硬山燕尾翹脊，脊頂飾有精緻「雙龍搶珠」與「福祿壽三仙」剪黏藝術。',
     pos: new THREE.Vector3(-9.2, PLATFORM_Y + 6.5, 3.2),
-    stemH: 92, photoKey: 'guanyin',
+    stemH: 46, photoKey: 'guanyin',
     camPos: [-12, 16, 26], camTarget: [-9.2, 4.5, 2]
   },
   {
@@ -837,7 +874,7 @@ const PINS_DATA = [
     title: '全臺孤例 ‧ 中介「官廳」',
     desc: '連接佛寺（大觀音亭）與道廟（興濟宮）的中介官廳，正面設圓拱門與「官廳」門額、左右紅門拱窗，為清代官員春秋致祭更衣齋宿之唯一遺構。',
     pos: new THREE.Vector3(0, PLATFORM_Y + 5.1, 2.9),
-    stemH: 86, photoKey: 'panorama',
+    stemH: 43, photoKey: 'panorama',
     camPos: [0, 14, 24], camTarget: [0, 4, 2]
   },
   {
@@ -845,7 +882,7 @@ const PINS_DATA = [
     title: '祀典興濟宮 ‧ 高聳三川殿',
     desc: '創建於1679年，為全臺唯一列入清代官方春秋祀典之保生大帝廟。三川殿屋脊較大觀音亭更為高聳壯麗，展現官祀廟宇威儀。',
     pos: new THREE.Vector3(9.4, PLATFORM_Y + 7.2, 3.2),
-    stemH: 96, photoKey: 'xingji',
+    stemH: 48, photoKey: 'xingji',
     camPos: [12, 16, 26], camTarget: [9.4, 5, 2]
   },
   {
@@ -853,7 +890,7 @@ const PINS_DATA = [
     title: '百年老榕樹與紅磚花台',
     desc: '佇立於大觀音亭廟埕左側的百年老榕樹，氣根垂髯、綠蔭蔽天，見證府城三百餘年香火鼎盛與街區常民生活。',
     pos: new THREE.Vector3(-16.2, 9.8, 7.6),
-    stemH: 78, photoKey: 'panorama',
+    stemH: 39, photoKey: 'panorama',
     camPos: [-22, 18, 28], camTarget: [-13, 5, 6]
   },
   {
@@ -861,7 +898,7 @@ const PINS_DATA = [
     title: '大觀音亭 ‧ 紅磚牆與綠釉花窗',
     desc: '三川殿次間以溫潤閩南紅磚砌築，搭配白石牆基與典雅「綠釉花窗」，窗下擺設四盆植栽，展現清代古剎靜謐雅緻之美。',
     pos: new THREE.Vector3(-12.7, PLATFORM_Y + 2.6, 5.3),
-    stemH: 82, photoKey: 'guanyin',
+    stemH: 41, photoKey: 'guanyin',
     camPos: [-11, 11, 21], camTarget: [-9.2, 3.8, 3.2]
   },
   {
@@ -869,7 +906,7 @@ const PINS_DATA = [
     title: '大觀音亭 ‧ 寶塔頂天公爐',
     desc: '位於大觀音亭三川殿正前方石階平台，雙耳圓腹銅爐上方冠以三層圓形傘蓋寶塔頂與卍字徽，造型古樸莊嚴，安放於寬廣石造檯面。',
     pos: new THREE.Vector3(-9.4, PLATFORM_Y + 3.0, 6.65),
-    stemH: 74, photoKey: 'guanyin',
+    stemH: 37, photoKey: 'guanyin',
     camPos: [-9.4, 10, 19], camTarget: [-9.4, 3.5, 6.65]
   },
   {
@@ -877,7 +914,7 @@ const PINS_DATA = [
     title: '祀典興濟宮 ‧ 六角亭蓋天公爐',
     desc: '位於興濟宮三川殿前，三足雙龍耳銅爐上方立有雙層六角飛簷亭蓋，雕工繁複細膩，與後方蟠龍石柱相映成趣，平穩放置於門前檯面。',
     pos: new THREE.Vector3(9.4, PLATFORM_Y + 3.0, 6.61),
-    stemH: 74, photoKey: 'xingji',
+    stemH: 37, photoKey: 'xingji',
     camPos: [9.4, 10, 19], camTarget: [9.4, 3.5, 6.61]
   },
   {
@@ -885,7 +922,7 @@ const PINS_DATA = [
     title: '興濟宮 ‧ 蟠龍石柱與彩繡門綵',
     desc: '興濟宮明間正門立有精雕青斗石蟠龍柱，柱頂懸掛金色八角宮燈，門楣上方垂掛紅金刺繡「祀典興濟宮」門綵。',
     pos: new THREE.Vector3(12.2, PLATFORM_Y + 3.2, 5.4),
-    stemH: 84, photoKey: 'xingji',
+    stemH: 42, photoKey: 'xingji',
     camPos: [11, 11, 21], camTarget: [9.4, 4.0, 3.2]
   },
   {
@@ -893,7 +930,7 @@ const PINS_DATA = [
     title: '雙廟三進縱深與天井格局（空拍對照）',
     desc: '由空拍俯視可見「三川殿 ➔ 天井過水廊 ➔ 正殿（觀音殿／保生大帝殿）➔ 後殿」完整三進縱深，中央以官廳正堂緊密相連。',
     pos: new THREE.Vector3(0, PLATFORM_Y + 6.8, -6.5),
-    stemH: 90, photoKey: 'aerial',
+    stemH: 45, photoKey: 'aerial',
     camPos: [0, 52, 24], camTarget: [0, 2, -4]
   },
   {
@@ -901,7 +938,7 @@ const PINS_DATA = [
     title: '廁所（後方公共盥洗室與服務設施）',
     desc: '位於園區後方與左側護龍長廊後端之公共廁所，乾淨寬敞，方便參拜信眾與遊客洗手使用，設有無障礙動線連通後方停車空間。',
     pos: new THREE.Vector3(-12.3, PLATFORM_Y + 4.65, -31.5),
-    stemH: 92, photoKey: 'aerial',
+    stemH: 46, photoKey: 'aerial',
     camPos: [-14, 20, -14], camTarget: [-12.3, 4.5, -31.5]
   }
 ];
@@ -1046,6 +1083,11 @@ addEventListener('resize', () => {
 const clock = new THREE.Clock();
 let prevTime = 0;
 
+function lerpAngle(a, b, alpha) {
+  const diff = ((((b - a) + Math.PI) % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2) - Math.PI;
+  return a + diff * Math.min(alpha, 1);
+}
+
 ren.setAnimationLoop(() => {
   const t = clock.getElapsedTime();
   const dt = Math.min(t - prevTime, 0.1);
@@ -1053,6 +1095,53 @@ ren.setAnimationLoop(() => {
 
   // 島嶼輕微呼吸漂浮感
   world.position.y = Math.sin(t * 0.9) * 0.16;
+
+  // 人物巡遊走動（雙腳擺動 + 輕微起伏 + 平滑轉向）
+  for (const w of animatedWalkers) {
+    const [tx, tz] = w.waypoints[w.wpIdx];
+    const dx = tx - w.mesh.position.x;
+    const dz = tz - w.mesh.position.z;
+    const dist = Math.hypot(dx, dz);
+    if (dist < 0.25) {
+      w.wpIdx = (w.wpIdx + 1) % w.waypoints.length;
+    } else {
+      const step = Math.min(w.speed * dt, dist);
+      w.mesh.position.x += (dx / dist) * step;
+      w.mesh.position.z += (dz / dist) * step;
+      const targetRot = Math.atan2(-dx, -dz); // 人物正面朝向 -Z
+      w.mesh.rotation.y = lerpAngle(w.mesh.rotation.y, targetRot, dt * 6.5);
+    }
+    w.phase += dt * w.speed * 5.8;
+    const swing = Math.sin(w.phase) * 0.52;
+    if (w.mesh.userData.legs && w.mesh.userData.legs.length === 2) {
+      w.mesh.userData.legs[0].rotation.x = swing;
+      w.mesh.userData.legs[1].rotation.x = -swing;
+    }
+    w.mesh.position.y = w.mesh.userData.baseY + Math.abs(Math.sin(w.phase)) * 0.045;
+  }
+
+  // 機車騎乘經過（車輪轉動 + 平滑過彎 + 輕微車身震動）
+  for (const sc of animatedScooters) {
+    const [tx, tz] = sc.waypoints[sc.wpIdx];
+    const dx = tx - sc.mesh.position.x;
+    const dz = tz - sc.mesh.position.z;
+    const dist = Math.hypot(dx, dz);
+    if (dist < 0.45) {
+      sc.wpIdx = (sc.wpIdx + 1) % sc.waypoints.length;
+    } else {
+      const step = Math.min(sc.speed * dt, dist);
+      sc.mesh.position.x += (dx / dist) * step;
+      sc.mesh.position.z += (dz / dist) * step;
+      const targetRot = Math.atan2(dx, dz); // 機車車頭朝向 +Z
+      sc.mesh.rotation.y = lerpAngle(sc.mesh.rotation.y, targetRot, dt * 5.2);
+    }
+    if (sc.mesh.userData.wheels) {
+      for (const wh of sc.mesh.userData.wheels) {
+        wh.rotation.x += dt * sc.speed * 3.2;
+      }
+    }
+    sc.mesh.position.y = sc.mesh.userData.baseY + Math.sin(t * 20) * 0.008;
+  }
 
   // 旋轉模式
   if (window.isSpinning) {
