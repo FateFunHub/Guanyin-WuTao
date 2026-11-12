@@ -1,0 +1,87 @@
+{
+  "id": "A01",
+  "altIds": [
+    "A1",
+    "cabinet"
+  ],
+  "folderId": "A01",
+  "category": "architecture",
+  "temple": "祀典興濟宮",
+  "icon": "medication_liquid",
+  "image": "./導覽文本/建築/A01/A01_興濟宮_百年保生藥籤櫃與禁藥告示牌.jpg",
+  "slideImage": "./導覽文本/建築/ARCH_page-0001.jpg",
+  "location": {
+    "zh": "祀典興濟宮 — 正殿龍邊側廊",
+    "en": "Sacrificial Official Xingji Temple — Main Hall, Dragon Side Corridor",
+    "ja": "祀典興済宮 — 正殿龍側回廊",
+    "ko": "사전흥제궁 — 정전 용변 측랑"
+  },
+  "title": {
+    "zh": "百年醫道實證 — 保生藥籤櫃與禁藥告示牌",
+    "en": "Centuries of Healing — Centennial Medical Oracle Cabinet & Forbidden Herbs Notice",
+    "ja": "百年の医道遺産 — 保生薬籤櫃と禁薬告示牌",
+    "ko": "백년 의도의 실증 — 보생 약첨장과 금약(禁藥) 고시패"
+  },
+  "subtitle": {
+    "zh": "保存內、外、兒、婦、眼五科共330首古傳藥籤，並與現代保育法規接軌",
+    "en": "Preserving 330 historic prescriptions across 5 medical departments while integrating modern wildlife conservation ethics",
+    "ja": "内・外・小児・婦人・眼の五科計330首の古伝薬籤を収蔵し、現代の動物保護・医療法規とも調和",
+    "ko": "내·외·소아·부인·안과 5과 총 330수의 고전 약첨을 보존하며 현대 생태 보호 및 의료 법규와도 조화"
+  },
+  "tags": {
+    "zh": [
+      "五科330首藥籤",
+      "清代古木籤櫃",
+      "無形文化資產"
+    ],
+    "en": [
+      "5-Dept 330 Medical Oracles",
+      "Qing Wooden Cabinet",
+      "Intangible Medical Heritage"
+    ],
+    "ja": [
+      "五科330首の薬籤",
+      "清代木製薬籤櫃",
+      "伝統医療文化遺産"
+    ],
+    "ko": [
+      "5과 330수 약첨",
+      "청대 목제 약첨장",
+      "전통 의료 문화유산"
+    ]
+  },
+  "summary": {
+    "zh": "興濟宮鎮宮之寶之一。古樸木櫃分格收納大人內科120首、外科60首、小兒科60首、婦科60首、眼科30首共330首藥籤，並貼心附設保育類與禁藥替代說明牌。",
+    "en": "One of Xingji Temple's treasures: a historic wooden cabinet housing 330 medical oracle slips across Internal (120), Surgical (60), Pediatric (60), Gynecological (60), and Ophthalmic (30) medicine, alongside a modern notice replacing banned or endangered ingredients.",
+    "ja": "興済宮の至宝の一つ。内科120首・外科60首・小児科60首・婦人科60首・眼科30首の計330首の薬籤を収める古木櫃と、絶滅危惧種や禁止生薬の代替を案内する告示牌。",
+    "ko": "흥제궁의 핵심 보물로, 내과 120수·외과 60수·소아과 60수·부인과 60수·안과 30수 등 총 330수의 약첨을 보관한 고목장과 멸종위기종·금지 약재의 대체 안내 고시패가 함께 보존되어 있습니다."
+  },
+  "intro": {
+    "zh": "祀典興濟宮的「保生大帝藥籤」為全臺分類最完備、保存最完整的傳統醫藥籤詩系統。整座清代流傳至今的百年木製藥籤櫃，依中醫臨床分科精確劃分為五大類：大人內科（120首）、外科（60首）、小兒科（60首）、婦科（60首）及眼科（30首），總計達330首藥方。昔日醫療資源匱乏時，百姓罹病必先詣廟向大道公稟明病徵、擲得連續三聖筊後抽取藥籤，再持籤前往成功路周邊中藥行抓藥煎服。更難能可貴的是，廟方與現代中醫學界合作，在藥籤櫃旁設立「禁用與保育藥材告示牌」（如古方中之虎骨、犀角、硃砂等），指導信眾以合法安全之現代中草藥替代，體現古蹟信仰與時俱進的生命關懷。",
+    "en": "Sacrificial Official Xingji Temple's 'Baosheng Dadi Medical Oracles' represent Taiwan's most comprehensive and best-preserved temple medical prescription system. Housed in a century-old partitioned wooden cabinet from the Qing era, the system is organized into five clinical departments of Traditional Chinese Medicine: Adult Internal Medicine (120 slips), External/Surgery (60 slips), Pediatrics (60 slips), Gynecology (60 slips), and Ophthalmology (30 slips), totaling 330 prescriptions. In eras when clinics were scarce, patients described their symptoms before Baosheng Dadi, cast three consecutive confirming Jiaobei to confirm a slip number, and filled the herbal formula at nearby pharmacies. Commendably, the temple collaborated with modern TCM scholars to post a 'Prohibited & Protected Ingredients Notice' beside the cabinet—replacing archaic ingredients like tiger bone, rhino horn, or cinnabar with safe, legal botanical alternatives.",
+    "ja": "祀典興済宮の「保生大帝薬籤」は、台湾で最も分類が整い完全に保存されている伝統医療籤システムです。清代から伝わる百年の木製薬籤櫃には、漢方医学の臨床分類に従い、大人内科（120首）・外科（60首）・小児科（60首）・婦人科（60首）・眼科（30首）の五科計330首の処方が収められています。かつて医療が乏しかった時代、人々は病状を保生大帝に告げて三回連続で聖筊を得て薬籤を引き、周辺の漢方薬局で薬を調合してもらいました。さらに特筆すべきは、薬籤櫃に添えられた「禁薬告示牌」で、古方に含まれる虎骨・犀角・辰砂（朱砂）などの保護動物や制限生薬を安全な現代生薬に置き換える指針を示し、伝統信仰と現代医療倫理の共生を実現しています。",
+    "ko": "사전흥제궁의 '보생대제 약첨(藥籤)'은 대만에서 분류가 가장 체계적이고 완벽하게 보존된 전통 의약 점시 체계입니다. 청대부터 전해 내려온 백년 된 목제 약첨장에는 한의학 임상 분과에 따라 성인 내과(120수), 외과(60수), 소아과(60수), 부인과(60수), 안과(30수) 등 5과 총 330수의 처방이 세분되어 있습니다. 과거 의료 시설이 부족하던 시절 백성들은 대도공 앞에 증상을 고하고 세 번 연속 성교를 받아 약첨을 뽑은 뒤 인근 한약방에서 약을 지어 복용했습니다. 특히 사원 측은 현대 한의학계와 협력하여 옛 처방에 포함된 호골, 서각, 주사 등 보호 동물 및 금지 약재를 안전한 현대 한약재로 대체하도록 안내하는 '금약 고시패'를 함께 비치해 전통 신앙과 현대 의료 윤리의 조화를 이루어냈습니다."
+  },
+  "highlights": {
+    "zh": [
+      "五科330首完整體系：涵蓋內、外、婦、兒、眼五科，為研究清代臺灣疾病史與民間方劑學的活化石。",
+      "百年分格木籤櫃：木櫃格眼標示清晰、竹籤與籤紙古意盎然，歷經百餘年翻閱仍保存完好。",
+      "現代保育與用藥安全：主動標註古方中受《野生動物保育法》與藥事法規管制之藥材，展現科學與慈悲並重。"
+    ],
+    "en": [
+      "Complete 5-Department 330-Prescription System: Covers Internal, External, Pediatric, Gynecological, and Ophthalmic medicine—a living fossil of Qing medical history.",
+      "Centennial Wooden Cabinet: Clearly labeled pigeonholes and bamboo tally tubes preserved through more than a century of devotion.",
+      "Modern Conservation & Medication Safety: Proactively flags ingredients regulated by wildlife conservation and pharmaceutical laws, uniting compassion with science."
+    ],
+    "ja": [
+      "五科330首の完全体系：内・外・婦・小児・眼の五科を網羅し、清代台湾の疾病史と民間処方学を伝える生きた文化遺産。",
+      "百年の木製薬籤櫃：整然と区切られた木箱と竹籤が、百年以上の歳月を経ても良好に保存されている。",
+      "現代の動物保護と服薬安全：野生動物保護法や薬事法で規制される生薬を明示し、科学と慈悲の両立を体現。"
+    ],
+    "ko": [
+      "5과 330수의 완전한 체계: 내·외·부인·소아·안과를 망라하여 청대 대만의 질병사와 민간 방제학을 보여주는 살아있는 유산입니다.",
+      "백년 목제 약첨장: 정연하게 구획된 나무 서랍과 죽첨이 백여 년의 세월에도 온전히 보존되어 있습니다.",
+      "현대 생태 보호와 복약 안전: 야생동물보호법 및 약사법으로 규제되는 약재를 명확히 안내하여 과학과 자비를 함께 실천합니다."
+    ]
+  }
+}

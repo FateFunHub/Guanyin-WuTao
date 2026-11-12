@@ -1,0 +1,87 @@
+{
+  "id": "A10",
+  "altIds": [
+    "A10",
+    "oracle"
+  ],
+  "folderId": "A10",
+  "category": "architecture",
+  "temple": "大觀音亭",
+  "icon": "Auto_stories",
+  "image": "./導覽文本/建築/A10/A10_大觀音亭_觀音佛祖百首靈籤詩木櫃.jpg",
+  "slideImage": "./導覽文本/建築/ARCH_page-0010.jpg",
+  "location": {
+    "zh": "大觀音亭 — 正殿側廊籤詩區",
+    "en": "Da Guanyin Pavilion — Main Hall Side Corridor Oracle Area",
+    "ja": "大観音亭 — 正殿側廊おみくじ（霊籤）エリア",
+    "ko": "대관음정 — 정전 측랑 영첨(점시) 구역"
+  },
+  "title": {
+    "zh": "指點迷津 — 觀音佛祖百首靈籤詩木櫃",
+    "en": "Guiding the Perplexed — Guanyin Bodhisattva Hundred-Verse Fortune Oracle Cabinet",
+    "ja": "迷いを照らす — 観音仏祖百首霊籤（おみくじ）木櫃",
+    "ko": "방황을 일깨우는 지침 — 관음불조 백수(百首) 영첨시 목장"
+  },
+  "subtitle": {
+    "zh": "典藏觀音百首運勢靈籤，與興濟宮保生藥籤形成「觀音醫心、大道公醫身」之雙璧",
+    "en": "Housing 100 fortune oracle poems of Guanyin, pairing with Xingji Temple's medical oracles so that 'Guanyin heals the heart while Baosheng Dadi heals the body'",
+    "ja": "観音百首の運勢霊籤を収め、興済宮の薬籤と並び「観音様が心を癒し、保生大帝が身を癒す」双璧を成す",
+    "ko": "관음 백수 운세 영첨을 간직하여 흥제궁 약첨과 함께 '관음은 마음을 치유하고 대도공은 몸을 치유한다'는 완벽한 조화를 형성"
+  },
+  "tags": {
+    "zh": [
+      "觀音百首靈籤",
+      "運勢指津",
+      "醫心與醫身"
+    ],
+    "en": [
+      "Guanyin 100 Oracles",
+      "Life & Fortune Guidance",
+      "Healing Heart & Body"
+    ],
+    "ja": [
+      "観音百首霊籤",
+      "運勢・人生指針",
+      "心の癒しと身の癒し"
+    ],
+    "ko": [
+      "관음 백수 영첨",
+      "운세·인생 지침",
+      "마음과 몸의 치유"
+    ]
+  },
+  "summary": {
+    "zh": "古樸的百格木製籤櫃收納觀音佛祖一百首靈籤，以七言絕句結合歷史典故為信眾解答事業、婚姻、功名與家運疑惑。",
+    "en": "This antique 100-compartment wooden cabinet stores Guanyin Bodhisattva's 100 fortune oracle slips, using seven-character quatrains and historical allusions to guide worshippers on career, marriage, and family matters.",
+    "ja": "百の引き出しを持つ古木櫃に観音仏祖の百首霊籤を収蔵。七言絶句の漢詩と歴史故事により、仕事・縁談・学業・家運の悩みに指針を与える。",
+    "ko": "백 개의 칸으로 나뉜 고풍스러운 나무 서랍장에 관음불조의 백수 영첨시가 보관되어 있으며, 칠언절구 한시와 역사 고사를 통해 사업, 혼인, 학업, 가운의 고민에 해답을 제시합니다."
+  },
+  "intro": {
+    "zh": "如果說祀典興濟宮的「保生大帝330首藥籤」是醫治百姓身體病痛的良方，那麼大觀音亭的「觀音佛祖百首靈籤」便是撫慰信眾心靈迷惘的明燈——兩廟合璧，成就了府城著名的「大道公醫身、觀音媽醫心」佳話。這座百年木製籤詩櫃共分為一百格，收納第一首至第一百首靈籤。每張籤詩除了七言四句的詩文外，皆附有「古人典故」（如蘇秦不第、姜太公釣魚、劉備三顧茅廬等）以及針對婚姻、求財、功名、出外、農畜、六甲等十餘項生活事務的吉凶斷語。籤櫃木質溫潤、字跡古雅，見證無數府城子民在此獲得人生轉折的勇氣與智慧。",
+    "en": "If Sacrificial Official Xingji Temple's 330 Medical Oracles are prescriptions for physical ailments, then Da Guanyin Pavilion's 'Guanyin Hundred-Verse Fortune Oracles' are a beacon for troubled hearts—together fulfilling the beloved Tainan saying: 'Baosheng Dadi heals the body; Guanyin Mazu heals the mind.' This antique wooden cabinet is divided into 100 compartments housing Oracle No. 1 through No. 100. Each slip features a four-line, seven-character classical poem accompanied by a historical narrative allusion (such as Jiang Ziya Fishing or Liu Bei's Three Visits to the Thatched Cottage) and specific prognostications for marriage, wealth, exams, travel, and childbirth.",
+    "ja": "祀典興済宮の「330首薬籤」が身体の病を治す処方箋であるならば、大観音亭の「観音仏祖百首霊籤」は心の迷いを癒す灯火であり、両廟が並ぶことで「大道公が身を治し、観音媽が心を癒す」という台南ならではの信仰文化が生まれました。百マスに区切られた味わい深い木櫃には、第一首から第百首までのおみくじ（霊籤）が収められています。各籤には七言絶句の漢詩とともに「歴史故事（姜太公の釣り、三顧の礼など）」と、縁談・金運・学業・旅立ち・安産など生活全般にわたる吉凶判断が記され、多くの人々に生きる勇気と知恵を与えてきました。",
+    "ko": "사전흥제궁의 '330수 약첨'이 백성의 육체적 질병을 고치는 처방이라면, 대관음정의 '관음불조 백수 영첨'은 신도들의 마음속 방황을 달래주는 등불로, 두 사원이 나란히 자리하여 '대도공은 몸을 고치고 관음마는 마음을 고친다'는 타이난의 아름다운 전통을 이루었습니다. 백 개의 칸으로 이루어진 고색창연한 목제 첨시장은 제1수부터 제100수까지의 영첨을 담고 있습니다. 각 첨시에는 칠언절구 시문과 함께 역사 고사(강태공의 낚시, 삼고초려 등), 그리고 혼인, 재물, 공명, 출행, 잉태 등 삶의 주요 관심사에 대한 길흉 판단이 적혀 있어 수많은 이들에게 용기와 지혜를 건네왔습니다."
+  },
+  "highlights": {
+    "zh": [
+      "觀音醫心、大道公醫身：與隔壁興濟宮藥籤櫃形成全臺獨一無二的「身心雙療」籤詩文化。",
+      "百首七言古典籤詩：融合歷史戲曲典故與人情哲理，勸勉世人修心行善、靜待時機。",
+      "百年手作木櫃工藝：百格抽屜與分格木欄排列井然，散發歲月摩挲的溫潤木澤。"
+    ],
+    "en": [
+      "Guanyin Heals the Mind, Baosheng Heals the Body: Forms a unique holistic 'mind-and-body' oracle culture alongside Xingji Temple's medical cabinet.",
+      "100 Classical Quatrains: Blends historical drama allusions with moral wisdom, encouraging patience and virtuous action.",
+      "Handcrafted Wooden Grid: One hundred neatly ordered compartments polished smooth by generations of seeking hands."
+    ],
+    "ja": [
+      "「観音は心を癒し、大道公は身を癒す」：隣の興済宮の薬籤櫃と対を成し、心身両面を救う独自の籤文化を形成。",
+      "百首の古典漢詩と故事：歴史故事を通じて人生の教訓を説き、善行と心の平穏へと導く。",
+      "百マスの木製籤櫃：整然と並ぶ百個の木枠が、長年の参拝者の手触れによって温かみのある艶を放つ。"
+    ],
+    "ko": [
+      "'관음은 마음을 치유하고 대도공은 몸을 치유한다': 이웃한 흥제궁의 약첨장과 짝을 이루어 심신을 함께 치유하는 독보적인 점시 문화를 형성합니다.",
+      "백수의 고전 한시와 고사: 역사 고사를 통해 삶의 이치를 일깨우며 선행과 인내의 지혜를 전합니다.",
+      "백 칸 수제 목장 공예: 정연하게 짜인 백 개의 나무 칸막이에 오랜 세월 참배객들의 손길이 닿아 깊은 윤기가 흐릅니다."
+    ]
+  }
+}

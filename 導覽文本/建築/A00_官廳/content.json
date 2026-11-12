@@ -1,0 +1,87 @@
+{
+  "id": "HALL",
+  "altIds": [
+    "hall",
+    "A00"
+  ],
+  "folderId": "官廳",
+  "category": "architecture",
+  "temple": "國定古蹟建築",
+  "icon": "account_balance",
+  "image": "./導覽文本/官廳/P_20261106_105930.jpg",
+  "slideImage": "./導覽文本/官廳/P_20261106_105935.jpg",
+  "location": {
+    "zh": "大觀音亭與祀典興濟宮中央連接處（官廳）",
+    "en": "Central Connecting Pavilion between Da Guanyin Pavilion & Xingji Temple (Official Hall)",
+    "ja": "大観音亭と祀典興済宮の中央連絡部（官庁）",
+    "ko": "대관음정과 사전흥제궁 중앙 연결부(관청)"
+  },
+  "title": {
+    "zh": "佛道同源 — 雙廟並峙格局與八角門「官廳」",
+    "en": "Buddhist-Taoist Harmony — Dual-Temple Layout & Octagonal-Gate 'Official Hall'",
+    "ja": "仏道同源 — 仏道並立伽藍と八角門「官庁」",
+    "ko": "불도동원 — 불도 병립 가람과 팔각문 '관청(官廳)'"
+  },
+  "subtitle": {
+    "zh": "全臺唯一現存春秋祀典附設官廳，以八角門串聯左佛（大觀音亭）右道（興濟宮）",
+    "en": "Taiwan's only surviving sacrificial Official Hall, linking Buddhism (left) and Taoism (right) through octagonal portals",
+    "ja": "台湾で唯一現存する春秋祀典附属の官庁。八角門で左の仏寺（大観音亭）と右の道観（興済宮）を結ぶ",
+    "ko": "대만에서 유일하게 현존하는 춘추사전 부설 관청으로, 팔각문을 통해 불교(대관음정)와 도교(흥제궁)를 하나로 연결"
+  },
+  "tags": {
+    "zh": [
+      "國定古蹟核心",
+      "全臺唯一官廳",
+      "佛道共祀樞紐"
+    ],
+    "en": [
+      "National Monument Core",
+      "Sole Surviving Official Hall",
+      "Buddhist-Taoist Nexus"
+    ],
+    "ja": [
+      "国定古蹟の核心",
+      "台湾唯一の官庁",
+      "仏道共祀の要"
+    ],
+    "ko": [
+      "국정고적 핵심",
+      "대만 유일의 관청",
+      "불도공사 허브"
+    ]
+  },
+  "summary": {
+    "zh": "大觀音亭（佛教）與祀典興濟宮（道教）兩座三進古剎並排而立，中央以全臺僅存的清代祀典「官廳」及左右八角門相通，形成舉世罕見的「佛道同源」建築群。",
+    "en": "Da Guanyin Pavilion (Buddhist) and Sacrificial Official Xingji Temple (Taoist) stand side by side, connected at their center by Taiwan's only surviving Qing-dynasty 'Official Hall' and octagonal doorways.",
+    "ja": "大観音亭（仏教）と祀典興済宮（道教）の二つの三進建築が並び立ち、中央を台湾唯一の清代祀典「官庁」と左右の八角門がつなぐ、世界的にも珍しい「仏道同源」建築群。",
+    "ko": "대관음정(불교)과 사전흥제궁(도교) 두 개의 삼진(三進) 고찰이 나란히 서 있고, 중앙에는 대만 유일의 청대 사전 '관청'과 좌우 팔각문이 두 사원을 이어주는 독보적인 '불도동원' 건축군입니다."
+  },
+  "intro": {
+    "zh": "「大觀音亭暨祀典興濟宮」最令建築史與宗教史學者驚嘆之處，在於左為佛教古剎「大觀音亭」（明永曆年間創建）、右為道教官廟「祀典興濟宮」（明永曆33年創建），兩座廟宇同坐北朝南、平行並峙，均採「三川殿—拜亭—正殿—天井—後殿」之三進縱深格局。兩廟之間設有「官廳」，最初為清同治、光緒年間興濟宮列入官方春秋祀典後，供地方文武大員致祭前下轎、更衣、盥洗與齊宿候祭的專屬場所（門口曾立下馬碑）。官廳兩側開有磚砌「八角門」，使信眾能自由穿行於觀音亭與興濟宮之間，達成「入一門而禮敬佛道雙聖」的圓融境界。",
+    "en": "What marvels historians of architecture and religion most about the Da Guanyin Pavilion and Sacrificial Official Xingji Temple complex is its side-by-side juxtaposition of a Buddhist monastery on the left (founded before 1678) and a Taoist state-sacrificial temple on the right (founded in 1679). Both face south along parallel three-courtyard axes. Between them stands the 'Official Hall (Guanting)'—originally built when Xingji Temple entered the Qing Imperial Spring and Autumn Sacrificial Canon so that civil and military mandarins could dismount, change into ceremonial robes, purify themselves, and await state rituals. Brick-framed octagonal portals on both sides of the Official Hall allow worshippers to walk seamlessly between the Buddhist and Taoist sanctuaries.",
+    "ja": "「大観音亭および祀典興済宮」の最大の特徴は、向かって左に仏教寺院「大観音亭」、右に道教廟「祀典興済宮」が南向きに並行して並び立つことです。両廟とも「三川殿—拝亭—正殿—中庭—後殿」の三進構造を持ち、その中央に「官庁」が設けられています。この官庁は清代に興済宮が公式の春秋祀典に列せられた際、参拝する文武官員が輿を降り、祭服に着替えて待機するための施設として建てられたもので、現存する祀典附属官庁としては台湾唯一です。官庁の左右にはレンガ造りの「八角門」が開かれ、参拝者は仏教と道教の聖域を自由に行き来することができます。",
+    "ko": "'대관음정 및 사전흥제궁'이 건축사와 종교사 학자들을 감탄케 하는 가장 큰 특징은 좌측의 불교 고찰 '대관음정'과 우측의 도교 관묘 '사전흥제궁'이 나란히 남향으로 병립해 있다는 점입니다. 두 사원 모두 '삼천전—배정—정전—천정—후전'의 3진 종심 구조를 갖추고 있으며, 그 사이에 '관청(官廳)'이 자리 잡고 있습니다. 관청은 청대 흥제궁이 공식 춘추사전에 등재된 후 제례에 참석하는 문무 관리들이 가마에서 내려 제복으로 갈아입고 대기하던 장소로, 대만에 현존하는 유일한 사전 부설 관청입니다. 관청 양옆의 팔각문을 통해 신도들은 불교와 도교의 성역을 자유롭게 오갈 수 있습니다."
+  },
+  "highlights": {
+    "zh": [
+      "全臺僅存祀典官廳：見證清代文武官員執行《欽定大清會典》春秋致祭之官方禮制空間。",
+      "左右八角門連通：八角形象徵八卦與吉祥圓滿，打破佛寺與道廟的物理藩籬。",
+      "雙軸三進對照美學：觀音亭建築沉穩內斂、敞廳開闊；興濟宮裝飾華麗繁複、神威顯赫，一次飽覽兩種宗教空間語彙。"
+    ],
+    "en": [
+      "Sole Surviving Sacrificial Official Hall: Witnesses the Qing state ritual protocol where mandarins prepared for Spring and Autumn sacrifices.",
+      "Twin Octagonal Portals: Symbolizing the Eight Trigrams (Bagua) and completeness, bridging the physical boundary between Buddhist and Taoist halls.",
+      "Dual-Axis Aesthetics: Contrast Da Guanyin Pavilion's tranquil open pavilion with Xingji Temple's ornate, vibrant craftsmanship."
+    ],
+    "ja": [
+      "台湾唯一の祀典官庁：清代の文武官員が春秋祀典の祭礼に臨んだ公式儀礼空間の貴重な遺構。",
+      "左右の八角門：八卦と円満を象徴する八角門が、仏寺と道廟の境界を優美につなぐ。",
+      "二軸三進の建築対比：落ち着きある大観音亭と華麗な装飾を誇る興済宮、二つの宗教建築美を同時に鑑賞できる。"
+    ],
+    "ko": [
+      "대만 유일의 사전 관청: 청대 문무 관리들이 춘추사전 제례를 준비하던 공식 의례 공간의 유일한 유구입니다.",
+      "좌우 팔각문 연결: 팔괘와 원만함을 상징하는 팔각문이 불교 사찰과 도교 사원의 물리적 경계를 허물어 줍니다.",
+      "이축 삼진의 건축 대비: 차분하고 개방적인 대관음정과 화려하고 정교한 흥제궁의 두 가지 종교 건축미를 동시에 감상할 수 있습니다."
+    ]
+  }
+}

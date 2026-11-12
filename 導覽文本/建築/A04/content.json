@@ -1,0 +1,86 @@
+{
+  "id": "A04",
+  "altIds": [
+    "A4"
+  ],
+  "folderId": "A04",
+  "category": "architecture",
+  "temple": "祀典興濟宮",
+  "icon": "brush",
+  "image": "./導覽文本/建築/A04/A04_興濟宮_保生大帝神蹟壁畫_醫虎喉.jpg",
+  "slideImage": "./導覽文本/建築/ARCH_page-0004.jpg",
+  "location": {
+    "zh": "祀典興濟宮 — 正殿虎邊壁面",
+    "en": "Sacrificial Official Xingji Temple — Main Hall, Tiger Side Wall",
+    "ja": "祀典興済宮 — 正殿虎側壁面",
+    "ko": "사전흥제궁 — 정전 호변 벽면"
+  },
+  "title": {
+    "zh": "國寶畫師潘麗水手跡 — 保生大帝神蹟壁畫「醫虎喉」",
+    "en": "Master Pan Lishui's Masterpiece — Baosheng Dadi Miracle Mural 'Healing the Tiger's Throat'",
+    "ja": "人間国宝・潘麗水の傑作 — 保生大帝神蹟壁画「医虎喉（虎の喉を治す）」",
+    "ko": "국보 화사 반려수의 걸작 — 보생대제 신적 벽화 '의호후(醫虎喉)'"
+  },
+  "subtitle": {
+    "zh": "以鐵撐撐開猛虎大口取出骨刺，化猛獸為護法「黑虎將軍」之傳奇",
+    "en": "Propping open a fierce tiger's jaws with an iron brace to extract a lodged bone, transforming the beast into the Black Tiger General",
+    "ja": "鉄輪で猛虎の口を支えて喉の骨を抜き、猛獣を護法「黒虎将軍」へと教化した伝説を描く",
+    "ko": "철제 지지대로 호랑이의 입을 벌려 목에 걸린 뼈를 빼내고, 맹수를 호법 '흑호장군'으로 교화시킨 전설"
+  },
+  "tags": {
+    "zh": [
+      "潘麗水大師真跡",
+      "醫虎喉典故",
+      "黑虎將軍由來"
+    ],
+    "en": [
+      "Pan Lishui Original",
+      "Healing the Tiger's Throat",
+      "Origin of Black Tiger General"
+    ],
+    "ja": [
+      "潘麗水大師の真跡",
+      "医虎喉の故事",
+      "黒虎将軍の由来"
+    ],
+    "ko": [
+      "반려수 대사 진적",
+      "의호후 고사",
+      "흑호장군의 유래"
+    ]
+  },
+  "summary": {
+    "zh": "與龍邊「點龍睛」對稱呼應。描繪猛虎吞食婦人導致髮簪骨刺卡喉、痛苦求救，吳夲不懼危險以鐵環撐口取出骨刺，猛虎遂感恩皈依成為座前護法。",
+    "en": "Paired symmetrically with 'Dotting the Dragon's Eye', this mural depicts a fierce tiger with a bone and hairpin lodged in its throat begging Wu Tao for help; after Wu Tao extracted the bone using an iron ring brace, the grateful tiger became his guardian mount.",
+    "ja": "龍側の「点龍睛」と対を成す名作。喉に骨と簪が刺さり苦しむ猛虎を、呉夲が鉄輪で口を支えて治療し、恩を感じた虎が護法「黒虎将軍」となった物語を描く。",
+    "ko": "용변의 '점룡정'과 대칭을 이루는 명작으로, 목에 뼈와 비녀가 걸려 고통받던 호랑이를 오본이 철환으로 입을 받쳐 치료해 주자 은혜에 감복한 호랑이가 호법 '흑호장군'이 된 이야기를 그렸습니다."
+  },
+  "intro": {
+    "zh": "位於祀典興濟宮正殿虎邊壁面的「醫虎喉」，同樣出自彩繪國寶大師潘麗水之手。傳說吳夲於山中採藥時，遇一頭斑斕猛虎因吞食婦人，喉嚨被骨頭與銀髮簪刺穿，痛苦萬分地伏地垂淚求救。吳夲見狀先斥責其傷生之過，猛虎點頭悔悟；吳夲遂展現仁醫無畏精神，以靈符鐵環撐開虎口，伸手入喉拔出骨刺並敷以金瘡靈藥。猛虎痊癒後感念救命之恩，自願留在吳夲身邊充當坐騎與山門護法，這正是全臺保生大帝廟神案下方皆供奉「黑虎將軍（虎爺）」的典故由來。畫中猛虎溫馴張口、眼神帶淚，與吳夲慈悲專注的神情形成動人對比。",
+    "en": "Positioned on the Tiger-Side wall of Xingji Temple's Main Hall, 'Healing the Tiger's Throat' is the companion masterpiece by National Heritage painter Pan Lishui. Legend relates that while gathering herbs in the mountains, Wu Tao encountered a ferocious tiger writhing in agony because a bone and silver hairpin had pierced its throat. Kneeling in tears, the tiger begged for mercy. After Wu Tao admonished the beast for harming life and received its contrite nod, the fearless physician placed a talismanic iron brace between its jaws, reached inside to extract the bone, and applied healing powder. In gratitude, the cured tiger vowed to serve Wu Tao forever as his mount and temple guardian—explaining why 'General Black Tiger (Huye)' is enshrined beneath the altar of every Baosheng Dadi temple.",
+    "ja": "祀典興済宮正殿の虎側壁面に描かれた「医虎喉」も、人間国宝・潘麗水画師による対幅の傑作です。伝説によれば、呉夲が山中で薬草を採っていた際、喉に骨と簪が刺さって苦しむ猛虎が涙を流して助けを求めました。呉夲が殺生の罪を諭すと虎は深く悔い改めたため、呉夲は恐れずに鉄の輪（鉄撐）で虎の口を開け、喉の奥から骨を抜き取って霊薬を塗ってやりました。命を救われた虎は恩義に感じ、呉夲の乗り物・守護神として仕えるようになりました。これが保生大帝廟の神卓の下に「黒虎将軍（虎爺）」が祀られる由来です。画中の虎の潤んだ瞳と、呉夲の慈愛に満ちた眼差しの対比が見る者の心を打ちます。",
+    "ko": "사전흥제궁 정전 호변 벽면에 자리한 '의호후(醫虎喉)' 역시 채화 국보 대사 반려수의 대작입니다. 전설에 따르면 오본이 산중에서 약초를 캐던 중 목구멍에 뼈와 비녀가 걸려 고통스러워하며 눈물로 구원을 청하는 호랑이를 만났습니다. 오본이 살생의 죄를 꾸짖자 호랑이가 고개를 끄덕이며 참회했고, 이에 오본은 두려움 없이 철제 고리로 호랑이 입을 벌려 목 안의 뼈를 뽑아내고 영약을 발라 치료해 주었습니다. 목숨을 구한 호랑이는 은혜에 보답하고자 스스로 오본의 좌기(坐騎)이자 호법신이 되었으며, 이것이 보생대제 사원 제단 아래에 '흑호장군(호야)'을 모시게 된 유래입니다."
+  },
+  "highlights": {
+    "zh": [
+      "生動角色心理刻畫：猛虎雖身軀龐大卻伏地仰首、眼神流露求救與感恩，毫無兇戾之氣。",
+      "傳統外科器械入畫：細膩描繪撐開虎口的鐵撐與拔刺鑷具，反映宋代中醫外科與咽喉科歷史想像。",
+      "黑虎將軍信仰起源：看完壁畫即可低頭參拜神案下方的「虎爺（黑虎將軍）」，達成圖文與實物的完美印證。"
+    ],
+    "en": [
+      "Psychological Depth: Despite its massive frame, the tiger crouches submissively with tearful, grateful eyes devoid of ferocity.",
+      "Surgical Instruments Depicted: Shows the iron jaw-brace and forceps, reflecting historical imagination of Song-dynasty throat surgery.",
+      "Origin of Tiger Deity Worship: Viewers can immediately look beneath the altar to venerate the Black Tiger General, connecting mural narrative with living ritual."
+    ],
+    "ja": [
+      "迫真の心理描写：巨体の猛虎が身を伏せ、懇願と感謝を込めた優しい目つきで治療を受ける姿が印象的。",
+      "外科器具の細密描写：虎の口を支える鉄輪や骨を抜く鑷子（ピンセット）が描かれ、伝統外科・咽喉科の歴史を伝える。",
+      "黒虎将軍（虎爺）信仰の起源：壁画を鑑賞した後に神卓下の「虎爺」を参拝することで、伝説と信仰が立体的に結びつく。"
+    ],
+    "ko": [
+      "생생한 심리 묘사: 거대한 체구의 맹수가 몸을 낮추고 애원과 감사가 담긴 유순한 눈빛으로 치료받는 모습이 인상적입니다.",
+      "전통 외과 기구 묘사: 호랑이 입을 받치는 철환과 뼈를 뽑는 집게가 세밀히 그려져 전통 외과·인후과의 역사를 보여줍니다.",
+      "흑호장군(호야) 신앙의 기원: 벽화를 감상한 뒤 제단 아래 모셔진 '호야'를 참배하며 전설과 신앙 현장을 입체적으로 체험할 수 있습니다."
+    ]
+  }
+}

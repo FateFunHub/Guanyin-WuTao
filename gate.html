@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>大觀音亭暨祀典興濟宮 — 2.5D Low-Poly 文化徑導覽</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{
+    margin:0;height:100%;overflow:hidden;
+    background:#213768;
+    font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+    user-select:none;-webkit-user-select:none;
+  }
+  canvas{display:block;width:100%;height:100%}
+
+  /* 圖一風格：橘色圓形編號標記 + 垂直細橘線 */
+  #pins-layer{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:10}
+  .pin{
+    position:absolute;
+    transform:translate(-50%,-100%);
+    display:flex;flex-direction:column;align-items:center;
+    pointer-events:auto;cursor:pointer;
+    transition:opacity .2s ease,filter .2s ease;
+  }
+  .pin:hover{z-index:30;filter:brightness(1.1)}
+  .pin:hover .dot{transform:scale(1.18);background:#df6b38}
+  .pin .label-pill{
+    background:rgba(28,32,46,.92);color:#fff;
+    padding:4px 11px;border-radius:14px;
+    font-size:12px;font-weight:700;letter-spacing:.5px;
+    margin-bottom:5px;white-space:nowrap;
+    border:1px solid rgba(255,255,255,.25);
+    box-shadow:0 4px 12px rgba(0,0,0,.35);
+    opacity:0;transform:translateY(4px);
+    transition:opacity .18s ease,transform .18s ease;
+    pointer-events:none;
+  }
+  .pin:hover .label-pill,.pin.active .label-pill{
+    opacity:1;transform:translateY(0);
+  }
+  .pin .dot{
+    width:28px;height:28px;border-radius:50%;
+    background:#c9643b;border:2.2px solid #fff;
+    color:#fff;font:700 12.5px/1 "Noto Sans TC",sans-serif;
+    display:flex;align-items:center;justify-content:center;
+    letter-spacing:-0.4px;
+    box-shadow:0 2px 8px rgba(0,0,0,.45);
+    transition:transform .18s ease,background .18s ease;
+  }
+  .pin.active .dot{
+    background:#f08543;transform:scale(1.22);
+    box-shadow:0 0 0 4px rgba(240,133,67,.35),0 3px 10px rgba(0,0,0,.5);
+  }
+  .pin .stem{
+    width:1.6px;
+    height:var(--stem-h,95px);
+    background:linear-gradient(180deg,#e38852 0%,rgba(227,136,82,.75) 85%,rgba(227,136,82,.2) 100%);
+    pointer-events:none;
+  }
+
+  /* 圖一左下角深色膠囊標籤 */
+  #bottom-badge{
+    position:fixed;left:22%;bottom:18px;transform:translateX(-50%);
+    background:rgba(26,28,32,.92);color:#fff;
+    padding:8px 20px;border-radius:26px;
+    font-size:14px;font-weight:700;letter-spacing:.8px;
+    border:1.5px solid rgba(255,255,255,.65);
+    box-shadow:0 4px 16px rgba(0,0,0,.45);
+    z-index:20;display:flex;align-items:center;gap:8px;
+    cursor:pointer;transition:transform .15s ease,background .15s ease;
+  }
+  #bottom-badge:hover{transform:translateX(-50%) scale(1.04);background:#252830}
+  #bottom-badge .num{color:#f2c94c;font-weight:800;font-size:13px}
+
+  /* 左上操作與視角切換列 */
+  #hud-top{
+    position:fixed;top:16px;left:18px;z-index:20;
+    display:flex;flex-wrap:wrap;gap:8px;align-items:center;
+  }
+  .hud-btn{
+    background:rgba(22,34,68,.82);backdrop-filter:blur(8px);
+    color:#eef3ff;border:1px solid rgba(255,255,255,.22);
+    padding:7px 14px;border-radius:20px;font-size:12.5px;font-weight:600;
+    cursor:pointer;transition:all .15s ease;
+    box-shadow:0 2px 10px rgba(0,0,0,.28);
+  }
+  .hud-btn:hover,.hud-btn.active{
+    background:#c9643b;border-color:#fff;color:#fff;
+  }
+
+  /* 右側現場照片對照與古蹟解說卡 */
+  #photo-card{
+    position:fixed;right:20px;bottom:20px;width:340px;max-width:calc(100vw - 40px);
+    background:rgba(20,29,56,.92);backdrop-filter:blur(12px);
+    border:1.5px solid rgba(255,255,255,.22);border-radius:18px;
+    color:#f3f6ff;padding:14px;z-index:25;
+    box-shadow:0 12px 32px rgba(0,0,0,.5);
+    transition:transform .25s ease,opacity .25s ease;
+  }
+  #photo-card.hidden{opacity:0;pointer-events:none;transform:translateY(14px)}
+  #photo-card .card-head{
+    display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;
+  }
+  #photo-card .badge{
+    background:#c9643b;color:#fff;font-weight:700;font-size:12px;
+    padding:3px 10px;border-radius:12px;border:1px solid rgba(255,255,255,.6);
+  }
+  #photo-card .close-btn{
+    background:none;border:none;color:#fff9;font-size:18px;cursor:pointer;padding:0 4px;
+  }
+  #photo-card .close-btn:hover{color:#fff}
+  #photo-card .img-wrap{
+    width:100%;height:156px;border-radius:11px;overflow:hidden;
+    background:#10182f;border:1px solid rgba(255,255,255,.15);margin-bottom:10px;
+    position:relative;
+  }
+  #photo-card img{
+    width:100%;height:100%;object-fit:cover;display:block;
+    transition:transform .35s ease;
+  }
+  #photo-card h3{margin:0 0 5px;font-size:15.5px;color:#ffd88a}
+  #photo-card p{margin:0;font-size:12.5px;line-height:1.55;color:#dbe4ff}
+  #photo-card .photo-tabs{
+    display:flex;gap:5px;margin-top:10px;padding-top:9px;
+    border-top:1px solid rgba(255,255,255,.12);
+  }
+  #photo-card .photo-tabs button{
+    flex:1;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);
+    color:#d8e2ff;border-radius:8px;padding:5px 4px;font-size:11px;font-weight:600;
+    cursor:pointer;transition:all .15s;
+  }
+  #photo-card .photo-tabs button.active,#photo-card .photo-tabs button:hover{
+    background:#c9643b;color:#fff;border-color:#fff9;
+  }
+
+  /* 嵌入手機版 (phone.html) 專用優化樣式 */
+  body.is-embedded #hud-top { display: none !important; }
+  body.is-embedded #export-panel { display: none !important; }
+  body.is-embedded #bottom-badge { display: none !important; }
+  body.is-embedded #photo-card { display: none !important; }
+  body.is-embedded .pin .label-pill { font-size: 11px; padding: 2px 8px; }
+  body.is-embedded .pin .dot { width: 24px; height: 24px; font-size: 11.5px; line-height: 20px; }
+</style>
+</head>
+<body>
+
+<div id="hud-top">
+  <button class="hud-btn active" data-cam="iso">📐 圖一 2.5D 等角視角</button>
+  <button class="hud-btn" data-cam="front">🏛️ 雙廟正面全景</button>
+  <button class="hud-btn" data-cam="guanyin">🪷 大觀音亭特寫</button>
+  <button class="hud-btn" data-cam="xingji">🐉 祀典興濟宮特寫</button>
+  <button class="hud-btn" data-cam="aerial">🛰️ 空拍三進俯視</button>
+  <button class="hud-btn" data-cam="rear">🚻 後方廁所與倉庫</button>
+  <button class="hud-btn" id="toggle-tex">🖼️ 現場照片材質：開</button>
+  <button class="hud-btn" id="export-json-menu" style="background:#b84a32;border-color:#ff9e80;">💾 匯出模型 (JSON / GLTF) ▼</button>
+</div>
+
+<!-- 匯出模型下拉/選單面板 -->
+<div id="export-panel" style="display:none;position:fixed;top:56px;left:18px;background:rgba(20,28,52,0.95);border:1px solid rgba(255,255,255,0.25);border-radius:12px;padding:14px;z-index:100;box-shadow:0 8px 28px rgba(0,0,0,0.65);backdrop-filter:blur(10px);min-width:300px;">
+  <div style="font-size:12.5px;color:#f2c94c;font-weight:700;margin-bottom:8px;">📦 Three.js Editor 專用格式 (.json)</div>
+  <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px;">
+    <button class="hud-btn" onclick="exportModel('guanyin','json')">🪷 大觀音亭 (daguanyin.json)</button>
+    <button class="hud-btn" onclick="exportModel('guanting','json')">🏛️ 中介官廳 (guanting.json)</button>
+    <button class="hud-btn" onclick="exportModel('xingji','json')">🐉 祀典興濟宮 (xingji.json)</button>
+    <button class="hud-btn" onclick="exportModel('rear','json')">🚻 後方廁所與倉庫 (rear_facility.json)</button>
+    <button class="hud-btn" onclick="exportModel('complex','json')">⛩️ 完整全景環境 (含地面/汽車/機車/大樹/四殿) (complex.json)</button>
+  </div>
+  <div style="font-size:12.5px;color:#7ee787;font-weight:700;margin-bottom:8px;border-top:1px solid rgba(255,255,255,0.15);padding-top:10px;">🎨 通用 3D 格式 (.glb / Blender / Editor)</div>
+  <div style="display:flex;flex-direction:column;gap:6px;">
+    <button class="hud-btn" onclick="exportModel('complex','glb')">⛩️ 匯出全環境完整場景 GLB (含地面/汽車/機車/大樹/四殿) (complex.glb)</button>
+    <button class="hud-btn" onclick="exportModel('guanyin','glb')">🪷 匯出大觀音亭 GLB</button>
+    <button class="hud-btn" onclick="exportModel('xingji','glb')">🐉 匯出興濟宮 GLB</button>
+    <button class="hud-btn" onclick="exportModel('rear','glb')">🚻 匯出後方廁所與倉庫 GLB</button>
+  </div>
+</div>
+
+<div id="pins-layer"></div>
+
+<div id="bottom-badge" title="點擊回到全景視角">
+  <span class="num">10</span>
+  <span>文化徑 × 佛道雙廟古蹟徑</span>
+</div>
+
+<div id="photo-card">
+  <div class="card-head">
+    <span class="badge" id="card-badge">① 全景導覽</span>
+    <button class="close-btn" id="card-close" title="收合面板">✕</button>
+  </div>
+  <div class="img-wrap">
+    <img id="card-img" alt="現場實景照片">
+  </div>
+  <h3 id="card-title">大觀音亭暨祀典興濟宮</h3>
+  <p id="card-desc">全臺唯一「佛道雙廟並立、中介官廳相連」國定級古蹟格局。左為1678年大觀音亭，右為1679年祀典興濟宮，點擊圖中 ①～⑩ 橘色標記可對照現場實景與建築細節。</p>
+  <div class="photo-tabs">
+    <button data-photo="panorama" class="active">雙廟全景</button>
+    <button data-photo="guanyin">大觀音亭</button>
+    <button data-photo="xingji">祀典興濟宮</button>
+    <button data-photo="aerial">空拍三進</button>
+  </div>
+</div>
+
+<script src="photo.js"></script>
+<script src="models/guanyin_model.js"></script>
+<script src="models/guanting_model.js"></script>
+<script src="models/xingji_model.js"></script>
+<script src="models/rear_facility_model.js"></script>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
+
+/* =========================================================================
+   1. 場景、相機與燈光設定（完全對齊圖一 2.5D Low-Poly 柔和夜藍光影風格）
+   ========================================================================= */
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x213768);
+scene.fog = new THREE.Fog(0x213768, 85, 195);
+
+const cam = new THREE.PerspectiveCamera(27, innerWidth / innerHeight, 0.5, 400);
+cam.position.set(-22, 36, 54);
+
+const ren = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+ren.setPixelRatio(Math.min(devicePixelRatio, 2));
+ren.setSize(innerWidth, innerHeight);
+ren.shadowMap.enabled = true;
+ren.shadowMap.type = THREE.PCFSoftShadowMap;
+ren.toneMapping = THREE.ACESFilmicToneMapping;
+ren.toneMappingExposure = 1.08;
+document.body.appendChild(ren.domElement);
+
+const ctl = new OrbitControls(cam, ren.domElement);
+ctl.target.set(0, 4.5, 1);
+ctl.enableDamping = true;
+ctl.dampingFactor = 0.06;
+ctl.minPolarAngle = 0.25;
+ctl.maxPolarAngle = 1.38;
+ctl.minDistance = 24;
+ctl.maxDistance = 115;
+
+// 柔和雙色半球光 + 主方向光 + 暖色補光（營造圖一溫潤的 Low-Poly 體塊感）
+const hemi = new THREE.HemisphereLight(0xdce8ff, 0x4b536e, 1.35);
+scene.add(hemi);
+
+const sun = new THREE.DirectionalLight(0xfff4e0, 1.85);
+sun.position.set(-24, 42, 32);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+sun.shadow.bias = -0.0005;
+Object.assign(sun.shadow.camera, { left: -38, right: 38, top: 38, bottom: -38, near: 4, far: 120 });
+scene.add(sun);
+
+const rim = new THREE.DirectionalLight(0x90b4ff, 0.55);
+rim.position.set(28, 20, -30);
+scene.add(rim);
+
+/* =========================================================================
+   2. 材質與幾何輔助函式 (Flat-Shaded Low-Poly 核心語彙)
+   ========================================================================= */
+const matCache = new Map();
+function M(color, opts = {}) {
+  const key = JSON.stringify({ color, ...opts });
+  if (matCache.has(key)) return matCache.get(key);
+  const m = new THREE.MeshStandardMaterial({
+    color,
+    flatShading: true,
+    roughness: 0.88,
+    metalness: 0.04,
+    ...opts
+  });
+  matCache.set(key, m);
+  return m;
+}
+
+const B = (w, h, d) => new THREE.BoxGeometry(w, h, d);
+const Cyl = (rt, rb, h, seg = 6) => new THREE.CylinderGeometry(rt, rb, h, seg);
+
+function add(geo, mat, x = 0, y = 0, z = 0, parent = scene) {
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.position.set(x, y, z);
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
+  parent.add(mesh);
+  return mesh;
+}
+
+// 載入現場實景照片作為建築正面與屋頂對照貼圖
+const loader = new THREE.TextureLoader();
+const photos = window.SITE_PHOTOS || {};
+function loadPhotoTex(dataUrl, repeatX = 1, repeatY = 1, offsetX = 0, offsetY = 0) {
+  if (!dataUrl) return null;
+  const t = loader.load(dataUrl);
+  t.colorSpace = THREE.SRGBColorSpace;
+  t.repeat.set(repeatX, repeatY);
+  t.offset.set(offsetX, offsetY);
+  return t;
+}
+
+// 裁切自現場照片的貼圖區段
+const texGuanyinWall = loadPhotoTex(photos.guanyin, 0.86, 0.36, 0.07, 0.25);
+const texXingjiWall  = loadPhotoTex(photos.xingji,  0.88, 0.42, 0.06, 0.18);
+const texGuanting    = loadPhotoTex(photos.panorama, 0.15, 0.28, 0.395, 0.22);
+
+const photoMeshes = [];
+
+/* =========================================================================
+   3. 2.5D 長方形漂浮文化島嶼基底 + 周邊格紋步道 + 入口階梯
+   ========================================================================= */
+const world = new THREE.Group();
+world.name = "Temple_Full_Environment_Scene";
+scene.add(world);
+window.world = world;
+
+const islandGroundGroup = new THREE.Group();
+islandGroundGroup.name = "Island_Ground";
+world.add(islandGroundGroup);
+
+// 長方形基底規格：涵蓋前殿廣場 (Z ~ 20) 到後方廁所/倉庫 (Z ~ -48)，左右寬度涵蓋雙廟與周邊 (X ~ -35 到 35)
+const ISLAND_W = 74;   // 左右總寬 (X: -37 ~ 37)
+const ISLAND_D = 78;   // 前後總長 (Z: -53 ~ 25)
+const ISLAND_CZ = -14; // 長方形中心 Z 座標
+
+// 3.1 長方形深層岩基 (下方暗灰岩層)
+const deepBase = add(B(ISLAND_W - 4, 7.5, ISLAND_D - 4), M(0x525a70), 0, -4.5, ISLAND_CZ, islandGroundGroup);
+deepBase.name = "Deep_Base_Rock";
+
+// 3.2 外環灰白石磚步道 (圍繞長方形四周)
+const outerWalk = add(B(ISLAND_W, 1.2, ISLAND_D), M(0x9ca3af), 0, -0.7, ISLAND_CZ, islandGroundGroup);
+outerWalk.name = "Outer_Walkway_Border";
+
+// 外環步道上的精緻格紋地磚線條
+const tileGridGroup = new THREE.Group();
+tileGridGroup.name = "Base_Walkway_Tiles";
+islandGroundGroup.add(tileGridGroup);
+for (let x = -ISLAND_W / 2 + 1.2; x <= ISLAND_W / 2 - 1.2; x += 2.2) {
+  for (let z = ISLAND_CZ - ISLAND_D / 2 + 1.2; z <= ISLAND_CZ + ISLAND_D / 2 - 1.2; z += 2.2) {
+    const isEdge = (Math.abs(x) > (ISLAND_W / 2 - 5.5)) || (Math.abs(z - ISLAND_CZ) > (ISLAND_D / 2 - 5.5));
+    if (isEdge) {
+      const shade = ((Math.round(x / 2.2) + Math.round(z / 2.2)) & 1) ? 0xadb4be : 0x9ea5b0;
+      const t = add(B(2.0, 0.08, 2.0), M(shade), x, -0.06, z, tileGridGroup);
+      t.castShadow = false;
+    }
+  }
+}
+
+// 3.3 長方形主島嶼平台：白色立體邊框護欄 + 淺綠灰草地基底
+const INNER_W = ISLAND_W - 9;
+const INNER_D = ISLAND_D - 9;
+const borderRim = add(B(INNER_W + 1.2, 0.75, INNER_D + 1.2), M(0xdce2df), 0, 0.15, ISLAND_CZ, islandGroundGroup);
+borderRim.name = "Border_Rim";
+const lawnTop = add(B(INNER_W, 0.82, INNER_D), M(0xaec2ae), 0, 0.18, ISLAND_CZ, islandGroundGroup);
+lawnTop.name = "Lawn_Top";
+
+// 草地上的柔和低多邊形色塊散佈
+const spotColors = [0xbad0b8, 0xa2b8a4, 0xc7d6c2, 0xbec9b8];
+for (let i = 0; i < 48; i++) {
+  const sx = (Math.sin(i * 1.7) * (INNER_W / 2 - 4));
+  const sz = ISLAND_CZ + (Math.cos(i * 2.3) * (INNER_D / 2 - 4));
+  if (Math.abs(sx) < 18 && sz > -16 && sz < 15) continue; // 避開前殿核心區
+  const patch = add(Cyl(0.55 + (i % 3) * 0.25, 0.6, 0.06, 6), M(spotColors[i % 4]), sx, 0.6, sz, islandGroundGroup);
+  patch.castShadow = false;
+}
+
+// 3.4 長方形外環鵝卵石護欄與橘色細索欄杆
+const fencePts = [
+  new THREE.Vector3(-INNER_W / 2, 1.05, ISLAND_CZ + INNER_D / 2),
+  new THREE.Vector3(INNER_W / 2, 1.05, ISLAND_CZ + INNER_D / 2),
+  new THREE.Vector3(INNER_W / 2, 1.05, ISLAND_CZ - INNER_D / 2),
+  new THREE.Vector3(-INNER_W / 2, 1.05, ISLAND_CZ - INNER_D / 2),
+  new THREE.Vector3(-INNER_W / 2, 1.05, ISLAND_CZ + INNER_D / 2)
+];
+const fenceGeo = new THREE.BufferGeometry().setFromPoints(fencePts);
+const fenceLine = new THREE.Line(fenceGeo, new THREE.LineBasicMaterial({ color: 0xd9824b }));
+fenceLine.name = "Boundary_Fence_Line";
+islandGroundGroup.add(fenceLine);
+
+// 沿長方形四周放置邊緣低多邊形鵝卵石
+for (let i = 0; i < 44; i++) {
+  const t = i / 44;
+  let rx, rz;
+  const peri = 2 * (INNER_W + INNER_D);
+  const d = t * peri;
+  if (d < INNER_W) {
+    rx = -INNER_W / 2 + d;
+    rz = ISLAND_CZ + INNER_D / 2;
+  } else if (d < INNER_W + INNER_D) {
+    rx = INNER_W / 2;
+    rz = ISLAND_CZ + INNER_D / 2 - (d - INNER_W);
+  } else if (d < 2 * INNER_W + INNER_D) {
+    rx = INNER_W / 2 - (d - INNER_W - INNER_D);
+    rz = ISLAND_CZ - INNER_D / 2;
+  } else {
+    rx = -INNER_W / 2;
+    rz = ISLAND_CZ - INNER_D / 2 + (d - 2 * INNER_W - INNER_D);
+  }
+  // 前方中央留給台階入口
+  if (rz > 20 && Math.abs(rx) < 6) continue;
+  const rockCol = i % 4 === 0 ? 0xd8d6d2 : (i % 2 ? 0x6c707d : 0x888d99);
+  const rk = add(new THREE.DodecahedronGeometry(0.45 + (i % 3) * 0.16, 0), M(rockCol), rx, 0.65, rz, islandGroundGroup);
+  rk.scale.set(1.2, 0.68, 1.0);
+  rk.rotation.y = i * 0.7;
+}
+
+/* =========================================================================
+   4. 廟埕大廣場與九階貫通花崗石階（依據現場照片4 & 空拍圖5）
+   ========================================================================= */
+const plazaGroup = new THREE.Group();
+plazaGroup.name = "Plaza_And_Granite_Steps";
+world.add(plazaGroup);
+
+// 4.1 廟前花崗石鋪面廣場（依據最新 complex.glb 擴增前台深度至 Z ~ 19.2）
+add(B(31.5, 0.22, 11.2), M(0xc8c3bc), 0, 0.62, 14.6, plazaGroup);
+for (let x = -14.5; x <= 14.5; x += 2.0) {
+  for (let z = 9.6; z <= 19.2; z += 1.6) {
+    const c = ((Math.round(x) + Math.round(z)) & 1) ? 0xd2cdc5 : 0xc1bcb4;
+    const slab = add(B(1.88, 0.06, 1.48), M(c), x, 0.74, z, plazaGroup);
+    slab.castShadow = false;
+  }
+}
+
+// 4.2 貫穿雙廟與官廳的 8 階寬廣花崗石階（依 complex.glb 前移 1.1m，使頂層平台有充裕深度完整放置香爐）
+const STEP_COUNT = 8;
+const PLATFORM_Y = 0.75 + STEP_COUNT * 0.22; // 2.51
+for (let i = 0; i < STEP_COUNT; i++) {
+  const depth = 4.2 - i * 0.44;
+  const y = 0.85 + i * 0.22;
+  const z = 8.50 - i * 0.22;
+  const stepCol = i % 2 === 0 ? 0xb8b4ae : 0xaba7a1;
+  add(B(29.8, 0.22, depth), M(stepCol), 0, y, z, plazaGroup);
+}
+
+// 雙廟三進建築共用基座台度（對齊 complex.glb 微調座標）
+add(B(29.8, PLATFORM_Y - 0.5, 22.8), M(0xb5b0a8), 0, (PLATFORM_Y + 0.5) / 2, -4.96, plazaGroup);
+
+/* =========================================================================
+   5. 雙廟三進縱深建築群（依照片 2、3、4、5 完整建構：大觀音亭 + 官廳 + 祀典興濟宮）
+   ========================================================================= */
+const complex = new THREE.Group();
+complex.position.y = PLATFORM_Y;
+world.add(complex);
+
+// 共用色彩（取色自現場照片）
+const C_BRICK      = 0xb85242; // 大觀音亭紅磚牆
+const C_WHITE_BASE = 0xe3dfd7; // 大觀音亭白石牆基
+const C_GREEN_WIN  = 0x3b6e5c; // 綠釉花窗
+const C_STONE_WALL = 0x76787b; // 興濟宮青斗石/花崗石雕牆
+const C_STONE_BASE = 0x99958c; // 興濟宮石基座
+const C_RED_PILLAR = 0x8e2922; // 朱紅點金柱/門扇
+const C_ROOF_TILE  = 0xc85a35; // 閩南橘紅屋瓦
+const C_ROOF_DARK  = 0xa94628; // 屋瓦深色層
+const C_RIDGE_BLUE = 0x3f5e78; // 燕尾脊藍灰剪黏底
+const C_GOLD       = 0xe8b84b; // 泥金與金飾
+
+/**
+ * 建立閩南三川殿/正殿燕尾脊屋頂（支援三段式三川脊或單段硬山燕尾脊）
+ */
+function buildSwallowtailRoof({
+  parent, x = 0, y = 0, z = 0,
+  width = 11, depth = 4.8, height = 1.9,
+  isSanChuan = true, // 三川殿中央抬升、左右次間略低
+  hasDragons = true, // 屋脊雙龍搶珠與福祿壽三仙
+  ridgeColor = C_RIDGE_BLUE
+}) {
+  const rg = new THREE.Group();
+  rg.position.set(x, y, z);
+  parent.add(rg);
+
+  if (isSanChuan) {
+    const cw = width * 0.46;
+    const sw = width * 0.30;
+    const sx = (cw + sw) * 0.47;
+
+    // 左右次間屋坡
+    for (const s of [-1, 1]) {
+      const sideRoof = add(new THREE.ConeGeometry(1, height * 0.85, 4, 1), M(C_ROOF_DARK), s * sx, height * 0.38, 0, rg);
+      sideRoof.rotation.y = Math.PI / 4;
+      sideRoof.scale.set(sw / Math.SQRT2, 1, depth / Math.SQRT2);
+      // 次間屋簷壓條
+      add(B(sw + 0.3, 0.2, depth + 0.3), M(C_ROOF_TILE), s * sx, 0.05, 0, rg);
+      // 次間燕尾翹脊
+      add(B(sw * 0.92, 0.28, 0.36), M(ridgeColor), s * sx, height * 0.82, 0, rg);
+      const wingTip = add(B(1.1, 0.26, 0.34), M(ridgeColor), s * (sx + sw * 0.42), height * 1.05, 0, rg);
+      wingTip.rotation.z = s * -0.52;
+      // 牌頭剪黏彩飾（照片2、3中極為華麗的墀頭/規帶剪黏）
+      for (const fz of [-1, 1]) {
+        add(new THREE.DodecahedronGeometry(0.32, 0), M(0x45a1b8), s * (sx + sw * 0.38), 0.38, fz * (depth * 0.44), rg);
+        add(new THREE.DodecahedronGeometry(0.24, 0), M(0xe65c4f), s * (sx - sw * 0.38), 0.42, fz * (depth * 0.44), rg);
+      }
+    }
+
+    // 中央明間抬升屋坡（三川脊）
+    const midY = 0.55;
+    const midRoof = add(new THREE.ConeGeometry(1, height, 4, 1), M(C_ROOF_TILE), 0, midY + height * 0.45, 0, rg);
+    midRoof.rotation.y = Math.PI / 4;
+    midRoof.scale.set((cw + 0.6) / Math.SQRT2, 1, (depth + 0.5) / Math.SQRT2);
+    add(B(cw + 0.8, 0.22, depth + 0.6), M(C_ROOF_DARK), 0, midY, 0, rg);
+
+    // 中央西施脊與雙翹燕尾
+    const rY = midY + height * 0.92;
+    add(B(cw * 0.95, 0.34, 0.42), M(ridgeColor), 0, rY, 0, rg);
+    add(B(cw * 0.88, 0.18, 0.48), M(0xd96545), 0, rY - 0.2, 0, rg);
+    for (const s of [-1, 1]) {
+      const swallow = add(B(1.45, 0.28, 0.36), M(ridgeColor), s * (cw * 0.48), rY + 0.32, 0, rg);
+      swallow.rotation.z = s * -0.58;
+      const tip = add(new THREE.ConeGeometry(0.18, 0.75, 4), M(C_GOLD), s * (cw * 0.56), rY + 0.72, 0, rg);
+      tip.rotation.z = s * -0.45;
+    }
+
+    // 屋脊剪黏：中央福祿壽三仙 + 左右雙龍搶珠（還原照片2、3屋頂神像與青龍）
+    if (hasDragons) {
+      // 福祿壽三仙
+      add(B(1.1, 0.22, 0.45), M(C_STONE_BASE), 0, rY + 0.22, 0, rg);
+      [[-0.32, 0xe05347], [0, 0xf2c14e], [0.32, 0x4ca6d8]].forEach(([dx, col], idx) => {
+        const h = idx === 1 ? 0.78 : 0.68;
+        add(Cyl(0.12, 0.15, h, 5), M(col), dx, rY + 0.32 + h / 2, 0, rg);
+        add(new THREE.SphereGeometry(0.11, 5, 4), M(0xffe0bd), dx, rY + 0.36 + h, 0, rg);
+      });
+      // 左右青龍剪黏
+      for (const s of [-1, 1]) {
+        for (let k = 0; k < 4; k++) {
+          const seg = add(new THREE.DodecahedronGeometry(0.22 - k * 0.02, 0), M(k % 2 ? 0x3ea37c : 0x56c298),
+            s * (1.15 + k * 0.36), rY + 0.26 + Math.sin(k * 1.1) * 0.18, 0, rg);
+          seg.castShadow = true;
+        }
+        // 次間屋脊鳳凰/花鳥剪黏
+        add(new THREE.DodecahedronGeometry(0.24, 0), M(0xf08c3a), s * sx, height * 1.05, 0, rg);
+        add(new THREE.ConeGeometry(0.18, 0.55, 4), M(0x45b5aa), s * (sx + s * 0.35), height * 1.18, 0, rg);
+      }
+    }
+  } else {
+    // 單段式硬山燕尾屋頂（用於正殿、後殿、官廳門樓）
+    const mainRoof = add(new THREE.ConeGeometry(1, height, 4, 1), M(C_ROOF_TILE), 0, height * 0.46, 0, rg);
+    mainRoof.rotation.y = Math.PI / 4;
+    mainRoof.scale.set(width / Math.SQRT2, 1, depth / Math.SQRT2);
+    add(B(width + 0.4, 0.22, depth + 0.4), M(C_ROOF_DARK), 0, 0.05, 0, rg);
+
+    const rY = height * 0.92;
+    add(B(width * 0.88, 0.32, 0.4), M(ridgeColor), 0, rY, 0, rg);
+    for (const s of [-1, 1]) {
+      const sw = add(B(1.3, 0.24, 0.34), M(ridgeColor), s * (width * 0.43), rY + 0.26, 0, rg);
+      sw.rotation.z = s * -0.52;
+    }
+    if (hasDragons) {
+      add(new THREE.OctahedronGeometry(0.28, 0), M(C_GOLD), 0, rY + 0.35, 0, rg);
+    }
+  }
+  return rg;
+}
+
+/* -------------------------------------------------------------------------
+   5A. 左翼：大觀音亭（由 Blender 編輯後之 models/guanyin.glb 轉換為 JSON 載入）
+   特色：紅磚牆面、白石基座、綠釉花窗、門前四盆植栽、寶塔頂天公爐、三進縱深
+   ------------------------------------------------------------------------- */
+let guanyinGroup;
+if (window.GUANYIN_MODEL_JSON) {
+  const loaderJSON = new THREE.ObjectLoader();
+  guanyinGroup = loaderJSON.parse(window.GUANYIN_MODEL_JSON);
+  guanyinGroup.name = "DaGuanyinTing_Temple";
+  // 遍歷設置陰影投射與接收
+  guanyinGroup.traverse(child => {
+    if (child.isMesh) {
+      child.castShadow = true;
+      child.receiveShadow = true;
+    }
+  });
+  complex.add(guanyinGroup);
+} else {
+  guanyinGroup = new THREE.Group();
+  guanyinGroup.position.set(-9.2, 0, 0);
+  complex.add(guanyinGroup);
+}
+
+/* -------------------------------------------------------------------------
+   5B. 中央：全臺孤例「中介官廳」（由更新後之 models/guanting.glb 轉換為 JSON 載入）
+   特色：中央圓拱門、「官廳」門額、左右紅門拱窗、重簷燕尾小門樓、後方官廳正堂
+   ------------------------------------------------------------------------- */
+let guantingGroup;
+if (window.GUANTING_MODEL_JSON) {
+  const loaderJSON = new THREE.ObjectLoader();
+  guantingGroup = loaderJSON.parse(window.GUANTING_MODEL_JSON);
+  guantingGroup.name = "GuanTing_Hall";
+  guantingGroup.traverse(child => {
+    if (child.isMesh) {
+      child.castShadow = true;
+      child.receiveShadow = true;
+    }
+  });
+  complex.add(guantingGroup);
+} else {
+  guantingGroup = new THREE.Group();
+  guantingGroup.position.set(0, 0, 0);
+  complex.add(guantingGroup);
+}
+
+/* -------------------------------------------------------------------------
+   5C. 右翼：祀典興濟宮（由更新後之 models/xingji.glb 轉換為 JSON 載入）
+   特色：屋脊明顯較高聳、青斗石雕牆面、蟠龍石柱、金色八角宮燈、門頂彩繡門綵、雙層六角亭蓋天公爐
+   ------------------------------------------------------------------------- */
+let xingjiGroup;
+if (window.XINGJI_MODEL_JSON) {
+  const loaderJSON = new THREE.ObjectLoader();
+  xingjiGroup = loaderJSON.parse(window.XINGJI_MODEL_JSON);
+  xingjiGroup.name = "XingJiGong_Temple";
+  xingjiGroup.traverse(child => {
+    if (child.isMesh) {
+      child.castShadow = true;
+      child.receiveShadow = true;
+    }
+  });
+  complex.add(xingjiGroup);
+} else {
+  xingjiGroup = new THREE.Group();
+  xingjiGroup.position.set(9.4, 0, 0);
+  complex.add(xingjiGroup);
+}
+
+/* -------------------------------------------------------------------------
+   5D. 後進：後方廁所與倉庫群 (由現場實景照片與空拍圖生成之 models/rear_facility.glb)
+   特色：長條雙坡閩南紅瓦、前方水泥立柱出廊、紅磚台度、洗手台鏡面、停車格、左過水廊、右鋼架倉庫
+   ------------------------------------------------------------------------- */
+let rearFacilityGroup;
+if (window.REAR_FACILITY_MODEL_JSON) {
+  const loaderJSON = new THREE.ObjectLoader();
+  rearFacilityGroup = loaderJSON.parse(window.REAR_FACILITY_MODEL_JSON);
+  rearFacilityGroup.name = "Rear_Restroom_Warehouse_Complex";
+  rearFacilityGroup.traverse(child => {
+    if (child.isMesh) {
+      child.castShadow = true;
+      child.receiveShadow = true;
+    }
+  });
+  complex.add(rearFacilityGroup);
+} else {
+  rearFacilityGroup = new THREE.Group();
+  complex.add(rearFacilityGroup);
+}
+
+/* =========================================================================
+   6. 現場周邊環境細節（百年老榕樹、右側公布欄與燈桿、廟埕機車、後方停車場與汽車）
+   ========================================================================= */
+// 6.1 左側「百年老榕樹」與紅磚花台（照片4左側超巨大老榕樹 + 空拍圖5左下綠色樹冠）
+const banyan = new THREE.Group();
+banyan.name = "Big_Banyan_Tree";
+banyan.position.set(-16.2, 0.75, 7.6);
+world.add(banyan);
+
+// 紅磚矮牆花台（照片4左側老榕樹基部）
+add(B(4.6, 1.1, 5.2), M(0xc7c2b8), 0, 0.55, 0, banyan);
+add(B(4.8, 0.26, 5.4), M(C_BRICK), 0, 1.15, 0, banyan);
+
+// 盤根錯節的粗壯榕樹主幹與氣根
+for (const [tx, tz, tr, th, rz] of [
+  [0, 0, 0.85, 6.2, -0.08],
+  [-0.55, 0.4, 0.45, 5.4, 0.12],
+  [0.5, -0.35, 0.48, 5.8, -0.15],
+  [-0.3, -0.5, 0.35, 4.8, 0.08]
+]) {
+  const trunk = add(Cyl(tr * 0.72, tr, th, 6), M(0x5e493a), tx, 1.1 + th / 2, tz, banyan);
+  trunk.rotation.z = rz;
+}
+// 濃密的低多邊形老榕樹冠（向廟埕上方自然延伸，如照片4左上角）
+const banyanLeaves = [
+  [0, 7.8, 0, 3.2, 0x4f7d4c],
+  [2.1, 8.4, 0.8, 2.6, 0x5d8e58],
+  [-1.8, 8.2, -0.6, 2.5, 0x446e43],
+  [0.8, 9.6, -0.4, 2.4, 0x689c62],
+  [-0.6, 6.9, 1.8, 2.2, 0x558350],
+  [2.6, 7.2, -1.0, 2.1, 0x4c7849]
+];
+banyanLeaves.forEach(([lx, ly, lz, lr, lcol], idx) => {
+  const leaf = add(new THREE.IcosahedronGeometry(lr, 1), M(lcol), lx, ly, lz, banyan);
+  leaf.scale.set(1.15, 0.82, 1.05);
+  leaf.rotation.set(idx * 0.5, idx * 0.8, 0);
+});
+
+// 6.2 環境配件總群組 (方便 Blender 大綱檢視與獨立調整)
+const propsGroup = new THREE.Group();
+propsGroup.name = "Environment_Props";
+world.add(propsGroup);
+
+// 照片4右側：興濟宮旁的高聳投光燈/廣播桿與玻璃公布欄
+const rightSide = new THREE.Group();
+rightSide.name = "Light_Pole_And_Bulletin_Board";
+rightSide.position.set(15.6, PLATFORM_Y, 4.5);
+propsGroup.add(rightSide);
+add(Cyl(0.14, 0.18, 6.8, 6), M(0x7c8288), 0, 3.4, 0, rightSide);
+add(B(0.85, 0.35, 0.45), M(0x383e45), -0.3, 6.8, 0, rightSide);
+add(B(0.2, 2.1, 2.4), M(0x878d94), 0.3, 1.05, 1.8, rightSide);
+add(B(0.24, 1.15, 2.1), M(0xbfd4e6), 0.28, 1.35, 1.8, rightSide);
+
+// 照片2與照片4大觀音亭前的「橘紅三角錐」
+const conesGroup = new THREE.Group();
+conesGroup.name = "Traffic_Cones";
+propsGroup.add(conesGroup);
+for (let i = 0; i < 4; i++) {
+  const cx = -12.6 + i * 0.72;
+  add(B(0.28, 0.06, 0.28), M(0x333333), cx, PLATFORM_Y + 0.03, 5.2, conesGroup);
+  add(new THREE.ConeGeometry(0.12, 0.42, 5), M(0xf05a28), cx, PLATFORM_Y + 0.24, 5.2, conesGroup);
+}
+
+// 圖一風格木造方向指標牌
+const sign = new THREE.Group();
+sign.name = "Wooden_Direction_Sign";
+sign.position.set(17.2, 0.6, 13.8);
+sign.rotation.y = -0.4;
+propsGroup.add(sign);
+add(Cyl(0.12, 0.14, 2.6, 5), M(0x634433), 0, 1.3, 0, sign);
+add(B(1.4, 0.36, 0.12), M(0x7d5640), 0.15, 2.15, 0, sign).rotation.z = 0.08;
+add(B(1.3, 0.34, 0.12), M(0x7d5640), -0.1, 1.65, 0, sign).rotation.z = -0.06;
+
+
+// 參訪 Q 版低多邊形人物（依 Blender 最新 complex.glb 調整縮放 scale: 0.516 與最新世界站位）
+const visitorsGroup = new THREE.Group();
+visitorsGroup.name = "Chibi_Visitors";
+propsGroup.add(visitorsGroup);
+
+function addChibiVisitor({ x, y = 0.74, z, rotY = 0, scale = 0.516, shirtCol = 0xdbe3f0, hatCol = null, hasBun = false, name = "Visitor" }) {
+  const p = new THREE.Group();
+  p.name = name;
+  p.position.set(x, y, z);
+  p.rotation.y = rotY;
+  p.scale.set(scale, scale, scale);
+  visitorsGroup.add(p);
+  // 雙腿
+  for (const lx of [-0.22, 0.22]) {
+    add(Cyl(0.15, 0.14, 0.75, 6), M(0x1f2229), lx, 0.38, 0, p);
+  }
+  // 身體與背包
+  add(Cyl(0.45, 0.52, 1.25, 8), M(shirtCol), 0, 1.25, 0, p);
+  add(B(0.55, 0.65, 0.32), M(0x3a68b8), 0, 1.3, 0.38, p);
+  // 圓頭與黑髮
+  add(new THREE.SphereGeometry(0.62, 10, 8), M(0xf2cbb2), 0, 2.35, 0, p);
+  add(new THREE.SphereGeometry(0.65, 10, 8, 0, Math.PI * 2, 0, Math.PI * 0.62), M(0x1c1917), 0, 2.4, 0.04, p);
+  if (hasBun) {
+    add(new THREE.SphereGeometry(0.26, 7, 6), M(0x1c1917), 0, 2.95, 0.22, p);
+  }
+  if (hatCol) {
+    const hat = add(Cyl(0.68, 0.68, 0.28, 10), M(hatCol), 0, 2.78, 0, p);
+    hat.rotation.x = -0.12;
+  }
+}
+// 對應 complex.glb 視口前景的三位參觀者（最新精確座標與等比縮放 scale: 0.516）
+addChibiVisitor({ x: 0.46,   y: 0.74, z: 15.89, rotY: 0.075, scale: 0.516, shirtCol: 0xdbe2f0, hasBun: true, name: "Visitor_Girl_Bun" });
+addChibiVisitor({ x: -0.81,  y: 0.74, z: 17.33, rotY: -0.05, scale: 0.516, shirtCol: 0x4568a8, hatCol: 0x3878a8, name: "Visitor_Blue_Hat" });
+addChibiVisitor({ x: -10.40, y: 0.74, z: 15.11, rotY: -0.27, scale: 0.516, shirtCol: 0x7c5eb8, hatCol: 0x3878a8, name: "Visitor_Purple_Coat" });
+
+// 6.3 廟埕廣場上的臺灣機車（照片4石階前停放與騎乘的機車群，依 complex.glb 放大 1.36x~1.51x 強化體塊感）
+const scootersGroup = new THREE.Group();
+scootersGroup.name = "Vehicles_Scooters";
+world.add(scootersGroup);
+
+function addScooter(x, z, rotY, bodyCol = 0xdbe0e6, hasRider = false, scale = 1.363, name = "Scooter") {
+  const sc = new THREE.Group();
+  sc.name = name;
+  sc.position.set(x, 0.75, z);
+  sc.rotation.y = rotY;
+  sc.scale.set(scale, scale, scale);
+  scootersGroup.add(sc);
+  // 輪胎
+  for (const wz of [-0.48, 0.48]) {
+    const w = add(Cyl(0.22, 0.22, 0.14, 8), M(0x25282c), 0, 0.22, wz, sc);
+    w.rotation.z = Math.PI / 2;
+  }
+  // 車身與坐墊
+  add(B(0.42, 0.38, 0.95), M(bodyCol), 0, 0.44, -0.05, sc);
+  add(B(0.38, 0.14, 0.62), M(0x2b2d30), 0, 0.66, -0.18, sc);
+  // 龍頭斜桿與車頭燈
+  const front = add(B(0.36, 0.68, 0.22), M(bodyCol), 0, 0.68, 0.38, sc);
+  front.rotation.x = -0.22;
+  add(B(0.72, 0.1, 0.12), M(0x33363b), 0, 0.98, 0.32, sc);
+  add(B(0.22, 0.14, 0.08), M(0xfff2b2, { emissive: 0xffd066, emissiveIntensity: 0.7 }), 0, 0.98, 0.44, sc);
+
+  if (hasRider) {
+    add(Cyl(0.22, 0.25, 0.62, 6), M(0x282c34), 0, 0.98, -0.12, sc);
+    add(new THREE.SphereGeometry(0.24, 7, 6), M(0xffe0c2), 0, 1.45, -0.1, sc);
+    add(new THREE.SphereGeometry(0.27, 7, 5, 0, Math.PI * 2, 0, Math.PI * 0.65), M(0x3a485e), 0, 1.48, -0.1, sc);
+  }
+}
+// 依照最新 complex.glb 精確配置：廟埕斜停白、銀 2 輛速克達 (1.363x) + 1 輛騎行騎士 (1.509x)
+addScooter(-12.57, 12.35, 0.45,  0xdfe4ea, false, 1.363, "Scooter_White_Parked");
+addScooter(-6.94,  13.09, 0.35,  0xc8cfd8, false, 1.363, "Scooter_Silver_Parked");
+addScooter(0.25,   12.38, -1.25, 0x8d99a8, true,  1.509, "Scooter_With_Rider");
+
+
+// 6.5 園區外圍低多邊形樹木
+const perimeterTreesGroup = new THREE.Group();
+perimeterTreesGroup.name = "Perimeter_Trees";
+world.add(perimeterTreesGroup);
+
+function addLowPolyTree(x, z, scale = 1, colMain = 0x628c63, name = "Tree") {
+  const tg = new THREE.Group();
+  tg.name = name;
+  tg.position.set(x, 0.58, z);
+  tg.scale.setScalar(scale);
+  perimeterTreesGroup.add(tg);
+  add(Cyl(0.24, 0.38, 2.2, 6), M(0x5c4234), 0, 1.1, 0, tg);
+  const crowns = [
+    [0, 3.1, 0, 1.45, colMain],
+    [0.55, 3.8, -0.25, 1.15, 0x739c70],
+    [-0.65, 3.3, 0.45, 1.1, 0x527a54]
+  ];
+  crowns.forEach(([cx, cy, cz, cr, cc], i) => {
+    const c = add(new THREE.IcosahedronGeometry(cr, 0), M(cc), cx, cy, cz, tg);
+    c.rotation.set(i * 0.6, i * 1.1, 0);
+  });
+}
+addLowPolyTree(-19.5, -2.5, 1.35, 0x5e8a60, "Tree_West_Front");
+addLowPolyTree(-18.2, -10.5, 1.5, 0x6a9668, "Tree_West_Mid");
+
+/* =========================================================================
+   8. 移除外圍懸浮顆粒 (簡化乾淨夜景視覺)
+   ========================================================================= */
+const orbs = [];
+
+/* =========================================================================
+   9. 圖一風格：橘色圓形編號標記 ①～⑩ + 細橘色垂直引線 + 現場照片連動
+   ========================================================================= */
+const PINS_DATA = [
+  {
+    id: '1', num: '①',
+    title: '大觀音亭 ‧ 三川殿燕尾脊',
+    desc: '創建於明鄭永曆32年（1678年），三川殿屋脊採閩南硬山燕尾翹脊，脊頂飾有精緻「雙龍搶珠」與「福祿壽三仙」剪黏藝術。',
+    pos: new THREE.Vector3(-9.2, PLATFORM_Y + 6.5, 3.2),
+    stemH: 92, photoKey: 'guanyin',
+    camPos: [-12, 16, 26], camTarget: [-9.2, 4.5, 2]
+  },
+  {
+    id: '2', num: '②',
+    title: '全臺孤例 ‧ 中介「官廳」',
+    desc: '連接佛寺（大觀音亭）與道廟（興濟宮）的中介官廳，正面設圓拱門與「官廳」門額、左右紅門拱窗，為清代官員春秋致祭更衣齋宿之唯一遺構。',
+    pos: new THREE.Vector3(0, PLATFORM_Y + 5.1, 2.9),
+    stemH: 86, photoKey: 'panorama',
+    camPos: [0, 14, 24], camTarget: [0, 4, 2]
+  },
+  {
+    id: '3', num: '③',
+    title: '祀典興濟宮 ‧ 高聳三川殿',
+    desc: '創建於1679年，為全臺唯一列入清代官方春秋祀典之保生大帝廟。三川殿屋脊較大觀音亭更為高聳壯麗，展現官祀廟宇威儀。',
+    pos: new THREE.Vector3(9.4, PLATFORM_Y + 7.2, 3.2),
+    stemH: 96, photoKey: 'xingji',
+    camPos: [12, 16, 26], camTarget: [9.4, 5, 2]
+  },
+  {
+    id: '4', num: '④',
+    title: '百年老榕樹與紅磚花台',
+    desc: '佇立於大觀音亭廟埕左側的百年老榕樹，氣根垂髯、綠蔭蔽天，見證府城三百餘年香火鼎盛與街區常民生活。',
+    pos: new THREE.Vector3(-16.2, 9.8, 7.6),
+    stemH: 78, photoKey: 'panorama',
+    camPos: [-22, 18, 28], camTarget: [-13, 5, 6]
+  },
+  {
+    id: '5', num: '⑤',
+    title: '大觀音亭 ‧ 紅磚牆與綠釉花窗',
+    desc: '三川殿次間以溫潤閩南紅磚砌築，搭配白石牆基與典雅「綠釉花窗」，窗下擺設四盆植栽，展現清代古剎靜謐雅緻之美。',
+    pos: new THREE.Vector3(-12.7, PLATFORM_Y + 2.6, 5.3),
+    stemH: 82, photoKey: 'guanyin',
+    camPos: [-11, 11, 21], camTarget: [-9.2, 3.8, 3.2]
+  },
+  {
+    id: '6', num: '⑥',
+    title: '大觀音亭 ‧ 寶塔頂天公爐',
+    desc: '位於大觀音亭三川殿正前方石階平台，雙耳圓腹銅爐上方冠以三層圓形傘蓋寶塔頂與卍字徽，造型古樸莊嚴，安放於寬廣石造檯面。',
+    pos: new THREE.Vector3(-9.4, PLATFORM_Y + 3.0, 6.65),
+    stemH: 74, photoKey: 'guanyin',
+    camPos: [-9.4, 10, 19], camTarget: [-9.4, 3.5, 6.65]
+  },
+  {
+    id: '7', num: '⑦',
+    title: '祀典興濟宮 ‧ 六角亭蓋天公爐',
+    desc: '位於興濟宮三川殿前，三足雙龍耳銅爐上方立有雙層六角飛簷亭蓋，雕工繁複細膩，與後方蟠龍石柱相映成趣，平穩放置於門前檯面。',
+    pos: new THREE.Vector3(9.4, PLATFORM_Y + 3.0, 6.61),
+    stemH: 74, photoKey: 'xingji',
+    camPos: [9.4, 10, 19], camTarget: [9.4, 3.5, 6.61]
+  },
+  {
+    id: '8', num: '⑧',
+    title: '興濟宮 ‧ 蟠龍石柱與彩繡門綵',
+    desc: '興濟宮明間正門立有精雕青斗石蟠龍柱，柱頂懸掛金色八角宮燈，門楣上方垂掛紅金刺繡「祀典興濟宮」門綵。',
+    pos: new THREE.Vector3(12.2, PLATFORM_Y + 3.2, 5.4),
+    stemH: 84, photoKey: 'xingji',
+    camPos: [11, 11, 21], camTarget: [9.4, 4.0, 3.2]
+  },
+  {
+    id: '9', num: '⑨',
+    title: '雙廟三進縱深與天井格局（空拍對照）',
+    desc: '由空拍俯視可見「三川殿 ➔ 天井過水廊 ➔ 正殿（觀音殿／保生大帝殿）➔ 後殿」完整三進縱深，中央以官廳正堂緊密相連。',
+    pos: new THREE.Vector3(0, PLATFORM_Y + 6.8, -6.5),
+    stemH: 90, photoKey: 'aerial',
+    camPos: [0, 52, 24], camTarget: [0, 2, -4]
+  },
+  {
+    id: '10', num: '⑩',
+    title: '廁所（後方公共盥洗室與服務設施）',
+    desc: '位於園區後方與左側護龍長廊後端之公共廁所，乾淨寬敞，方便參拜信眾與遊客洗手使用，設有無障礙動線連通後方停車空間。',
+    pos: new THREE.Vector3(-12.3, PLATFORM_Y + 4.65, -31.5),
+    stemH: 92, photoKey: 'aerial',
+    camPos: [-14, 20, -14], camTarget: [-12.3, 4.5, -31.5]
+  }
+];
+
+const pinsLayer = document.getElementById('pins-layer');
+const cardEl    = document.getElementById('photo-card');
+const cardBadge = document.getElementById('card-badge');
+const cardTitle = document.getElementById('card-title');
+const cardDesc  = document.getElementById('card-desc');
+const cardImg   = document.getElementById('card-img');
+const tabBtns   = document.querySelectorAll('#photo-card .photo-tabs button');
+
+function setCardPhoto(key) {
+  const url = (window.SITE_PHOTOS && window.SITE_PHOTOS[key]) || window.GATE_PHOTO;
+  if (url) cardImg.src = url;
+  tabBtns.forEach(b => b.classList.toggle('active', b.dataset.photo === key));
+}
+setCardPhoto('panorama');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => setCardPhoto(btn.dataset.photo));
+});
+document.getElementById('card-close').addEventListener('click', () => {
+  cardEl.classList.add('hidden');
+});
+
+// 相機平滑飛行動畫
+let camAnim = null;
+function flyTo(posArr, targetArr, duration = 0.85) {
+  camAnim = {
+    startPos: cam.position.clone(),
+    endPos: new THREE.Vector3(...posArr),
+    startTarget: ctl.target.clone(),
+    endTarget: new THREE.Vector3(...targetArr),
+    elapsed: 0,
+    duration
+  };
+}
+
+PINS_DATA.forEach(item => {
+  const el = document.createElement('div');
+  el.className = 'pin';
+  el.style.setProperty('--stem-h', item.stemH + 'px');
+  el.innerHTML = `
+    <div class="label-pill">${item.num} ${item.title}</div>
+    <div class="dot">${item.id}</div>
+    <div class="stem"></div>
+  `;
+  el.addEventListener('click', (e) => {
+    e.stopPropagation();
+    document.querySelectorAll('.pin').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    cardEl.classList.remove('hidden');
+    cardBadge.textContent = `${item.num} 現場實景對照`;
+    cardTitle.textContent = item.title;
+    cardDesc.textContent = item.desc;
+    setCardPhoto(item.photoKey);
+    flyTo(item.camPos, item.camTarget);
+
+    // 若處於嵌入狀態，通知父視窗 (phone.html) 連動切換卡片內容
+    if (window.parent && window.parent !== window) {
+      window.parent.postMessage({
+        type: 'pinClicked',
+        pinId: item.id,
+        num: item.num,
+        title: item.title,
+        desc: item.desc,
+        photoKey: item.photoKey
+      }, '*');
+    }
+  });
+  pinsLayer.appendChild(el);
+  item.el = el;
+});
+
+// 預設視角按鈕
+const CAM_PRESETS = {
+  iso:     { pos: [-22, 36, 54], target: [0, 4.5, 1],   photo: 'panorama' },
+  front:   { pos: [0, 14, 46],   target: [0, 4.5, 2],   photo: 'panorama' },
+  guanyin: { pos: [-11, 11, 23], target: [-9.2, 4.2, 3], photo: 'guanyin' },
+  xingji:  { pos: [11, 11, 23],  target: [9.4, 4.5, 3],  photo: 'xingji' },
+  aerial:  { pos: [0, 62, 18],   target: [0, 2, -3],    photo: 'aerial' },
+  rear:    { pos: [0, 16, -11],  target: [0, 2.8, -25], photo: 'aerial' }
+};
+
+document.querySelectorAll('[data-cam]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-cam]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const p = CAM_PRESETS[btn.dataset.cam];
+    if (p) {
+      flyTo(p.pos, p.target);
+      cardEl.classList.remove('hidden');
+      setCardPhoto(p.photo);
+    }
+  });
+});
+
+document.getElementById('bottom-badge').addEventListener('click', () => {
+  flyTo(CAM_PRESETS.iso.pos, CAM_PRESETS.iso.target);
+  cardEl.classList.remove('hidden');
+  setCardPhoto('panorama');
+});
+
+// 切換現場照片材質面顯示/純 Low-Poly 幾何顯示
+let showPhotoTex = true;
+const texBtn = document.getElementById('toggle-tex');
+texBtn.addEventListener('click', () => {
+  showPhotoTex = !showPhotoTex;
+  photoMeshes.forEach(m => { m.visible = showPhotoTex; });
+  texBtn.textContent = `🖼️ 現場照片材質：${showPhotoTex ? '開' : '關 (純幾何)'}`;
+  texBtn.classList.toggle('active', showPhotoTex);
+});
+
+/* =========================================================================
+   10. 動畫迴圈與 3D 標記座標投影更新
+   ========================================================================= */
+const projVec = new THREE.Vector3();
+function updatePins() {
+  for (const item of PINS_DATA) {
+    projVec.copy(item.pos);
+    world.localToWorld(projVec);
+    projVec.project(cam);
+    if (projVec.z > 1) {
+      item.el.style.display = 'none';
+      continue;
+    }
+    item.el.style.display = 'flex';
+    const x = (projVec.x * 0.5 + 0.5) * innerWidth;
+    const y = (-projVec.y * 0.5 + 0.5) * innerHeight;
+    item.el.style.left = `${x.toFixed(1)}px`;
+    item.el.style.top  = `${y.toFixed(1)}px`;
+  }
+}
+
+addEventListener('resize', () => {
+  cam.aspect = innerWidth / innerHeight;
+  cam.updateProjectionMatrix();
+  ren.setSize(innerWidth, innerHeight);
+});
+
+const clock = new THREE.Clock();
+let prevTime = 0;
+
+ren.setAnimationLoop(() => {
+  const t = clock.getElapsedTime();
+  const dt = Math.min(t - prevTime, 0.1);
+  prevTime = t;
+
+  // 島嶼輕微呼吸漂浮感
+  world.position.y = Math.sin(t * 0.9) * 0.16;
+
+  // 旋轉模式
+  if (window.isSpinning) {
+    world.rotation.y += 0.004;
+  }
+
+  // 外圍六角光點緩慢閃動漂浮
+  for (const m of orbs) {
+    m.position.y = m.userData.baseY + Math.sin(t * m.userData.speed + m.userData.phase) * 0.22;
+    m.rotation.z = t * 0.4 + m.userData.phase;
+  }
+
+  // 相機平滑過渡
+  if (camAnim) {
+    camAnim.elapsed += dt;
+    const k = Math.min(camAnim.elapsed / camAnim.duration, 1);
+    const ease = 1 - Math.pow(1 - k, 3);
+    cam.position.lerpVectors(camAnim.startPos, camAnim.endPos, ease);
+    ctl.target.lerpVectors(camAnim.startTarget, camAnim.endTarget, ease);
+    if (k >= 1) camAnim = null;
+  }
+
+  ctl.update();
+  updatePins();
+  ren.render(scene, cam);
+});
+
+/* =========================================================================
+   11. 匯出 Three.js JSON 工具 (供使用者匯入 Three.js Editor 或三維專案)
+   ========================================================================= */
+const modelRegistry = {
+  guanyin: guanyinGroup,
+  guanting: guantingGroup,
+  xingji: xingjiGroup,
+  rear: rearFacilityGroup,
+  complex: world,  // 包含完整環境場景（地面、大樹、汽車、機車、四殿建築）
+  world: world
+};
+
+// 將各主建物與主要分組命名，方便匯入 Blender 或 Three.js Editor 後有清晰的 Outliner 層級架構
+guanyinGroup.name = "DaGuanyinTing_Temple";
+guantingGroup.name = "GuanTing_Hall";
+xingjiGroup.name = "XingJiGong_Temple";
+if (rearFacilityGroup) rearFacilityGroup.name = "Rear_Restroom_Warehouse_Complex";
+complex.name = "Temples_Complex";
+world.name = "Temple_Full_Environment_Scene";
+
+const exportBtn = document.getElementById('export-json-menu');
+const exportPanel = document.getElementById('export-panel');
+exportBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  exportPanel.style.display = exportPanel.style.display === 'none' ? 'block' : 'none';
+});
+document.addEventListener('click', () => {
+  exportPanel.style.display = 'none';
+});
+exportPanel.addEventListener('click', (e) => e.stopPropagation());
+
+window.exportModel = function(key, format = 'json') {
+  const target = modelRegistry[key];
+  if (!target) return alert('找不到指定的模型群組！');
+
+  // 【關鍵修復】匯出前必須強制遞迴更新世界與局部變換矩陣，否則 Mesh 矩陣全為單位矩陣造成所有圖塊縮回世界原點 (0,0,0)
+  scene.updateMatrixWorld(true);
+  target.updateMatrixWorld(true);
+
+  if (format === 'glb') {
+    const exporter = new GLTFExporter();
+    exporter.parse(
+      target,
+      function(gltf) {
+        const blob = new Blob([gltf], { type: 'application/octet-stream' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        const glbNames = {
+          complex: 'complex.glb',
+          rear: 'rear_facility.glb',
+          guanyin: 'guanyin.glb',
+          xingji: 'xingji.glb',
+          guanting: 'guanting.glb'
+        };
+        a.download = glbNames[key] || `${key}.glb`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      },
+      function(error) {
+        console.error('GLTF Export Error:', error);
+        alert('匯出 GLB 失敗：' + error.message);
+      },
+      { binary: true }
+    );
+    exportPanel.style.display = 'none';
+    return;
+  }
+
+  // 使用 Three.js 原生 Object3D.toJSON()
+  const json = target.toJSON();
+  const jsonStr = JSON.stringify(json, null, 2);
+  const blob = new Blob([jsonStr], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+
+  const filenames = {
+    guanyin: 'guanyin.json',
+    guanting: 'guanting.json',
+    xingji: 'xingji.json',
+    rear: 'rear_facility.json',
+    complex: 'complex.json',
+    world: 'complex.json'
+  };
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filenames[key] || `${key}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  exportPanel.style.display = 'none';
+};
+
+// 【自動匯出勾點】若 URL 包含 export，自動將完整 world 場景匯出為 GLB 與 JSON 注入 DOM
+if (window.location.href.includes('export')) {
+  try {
+    scene.updateMatrixWorld(true);
+    world.updateMatrixWorld(true);
+
+  const exporter = new GLTFExporter();
+  exporter.parse(
+    world,
+    function(gltf) {
+        const bytes = new Uint8Array(gltf);
+        let binary = '';
+        const chunk = 8192;
+        for (let i = 0; i < bytes.length; i += chunk) {
+          binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunk));
+        }
+        const b64 = btoa(binary);
+        const preGlb = document.createElement('pre');
+        preGlb.id = 'export-glb-data';
+        preGlb.textContent = b64;
+        document.body.appendChild(preGlb);
+
+        const jsonStr = JSON.stringify(world.toJSON());
+        const preJson = document.createElement('pre');
+        preJson.id = 'export-json-data';
+        preJson.textContent = jsonStr;
+        document.body.appendChild(preJson);
+
+        const statusEl = document.createElement('div');
+        statusEl.id = 'export-complete-status';
+        statusEl.textContent = 'EXPORT_SUCCESS_GLB_BYTES_' + bytes.length;
+        document.body.appendChild(statusEl);
+      },
+      function(err) {
+        const statusEl = document.createElement('div');
+        statusEl.id = 'export-complete-status';
+        statusEl.textContent = 'EXPORT_FAIL_' + err.message;
+        document.body.appendChild(statusEl);
+      },
+      { binary: true }
+    );
+  } catch (e) {
+    const statusEl = document.createElement('div');
+    statusEl.id = 'export-complete-status';
+    statusEl.textContent = 'EXPORT_THROW_' + e.message;
+    document.body.appendChild(statusEl);
+  }
+}
+
+/* =========================================================================
+   12. 嵌入模式適配 (提供 phone.html 手機版導覽頁連動控制)
+   ========================================================================= */
+const isEmbedded = window.self !== window.top || new URLSearchParams(window.location.search).has('embed');
+if (isEmbedded) {
+  document.body.classList.add('is-embedded');
+}
+
+window.addEventListener('message', (ev) => {
+  if (!ev.data) return;
+  if (ev.data.type === 'setCam' && CAM_PRESETS[ev.data.cam]) {
+    const p = CAM_PRESETS[ev.data.cam];
+    flyTo(p.pos, p.target);
+    cardEl.classList.remove('hidden');
+    setCardPhoto(p.photo);
+  } else if (ev.data.type === 'toggleSpin') {
+    window.isSpinning = !window.isSpinning;
+  } else if (ev.data.type === 'reset') {
+    window.isSpinning = false;
+    flyTo(CAM_PRESETS.iso.pos, CAM_PRESETS.iso.target);
+    world.rotation.y = 0;
+  } else if (ev.data.type === 'flyToPin' && ev.data.id) {
+    const pin = PINS_DATA.find(p => p.id == ev.data.id);
+    if (pin) {
+      document.querySelectorAll('.pin').forEach(p => p.classList.remove('active'));
+      if (pin.el) pin.el.classList.add('active');
+      flyTo(pin.camPos, pin.camTarget);
+    }
+  }
+});
+</script>
+</body>
+</html>
