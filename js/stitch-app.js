@@ -115,10 +115,25 @@
 
   function splitSentences(text, lang) {
     if (!text) return [];
-    if (lang === "en") {
-      return text.split(/(?<=[.!?;])\s+/).map(s => s.trim()).filter(Boolean);
+    const raw = lang === "en"
+      ? text.split(/(?<=[.!?;])\s+/).map(s => s.trim()).filter(Boolean)
+      : text.split(/(?<=[。！？；\n])/).map(s => s.trim()).filter(Boolean);
+
+    // 將短句合併為約 120～140 字（英文約 260 字）的適中段落，大幅減少段落切換停頓並避免瀏覽器長句中斷
+    const maxLen = lang === "en" ? 260 : 135;
+    const joiner = lang === "en" ? " " : "";
+    const grouped = [];
+    let buf = "";
+    for (const s of raw) {
+      if (buf && (buf.length + s.length + joiner.length) > maxLen) {
+        grouped.push(buf);
+        buf = s;
+      } else {
+        buf = buf ? (buf + joiner + s) : s;
+      }
     }
-    return text.split(/(?<=[。！？；\n])/).map(s => s.trim()).filter(Boolean);
+    if (buf) grouped.push(buf);
+    return grouped;
   }
 
   function formatMMSS(sec) {
@@ -180,47 +195,67 @@
     }
     tts.utterToken += 1;
     const myToken = tts.utterToken;
+    const langCode = LANG_MAP[currentLang] || "zh-TW";
+    const rate = playbackRates[rateIdx];
+    const voice = pickVoice(langCode);
+    const startIdx = tts.chunkIdx;
     tts.chunkStartedAt = Date.now();
 
-    const utter = new SpeechSynthesisUtterance(tts.chunks[tts.chunkIdx]);
-    const langCode = LANG_MAP[currentLang] || "zh-TW";
-    utter.lang = langCode;
-    utter.rate = playbackRates[rateIdx];
-    const v = pickVoice(langCode);
-    if (v) utter.voice = v;
+    // 預先將後續段落依序排入瀏覽器語音佇列，消除段落之間（如「導覽鑑賞重點」前）的長停頓
+    for (let i = startIdx; i < tts.chunks.length; i++) {
+      const utter = new SpeechSynthesisUtterance(tts.chunks[i]);
+      utter.lang = langCode;
+      utter.rate = rate;
+      if (voice) utter.voice = voice;
 
-    utter.onend = () => {
-      if (tts.utterToken !== myToken) return;
-      if (tts.isPlaying && !tts.isPaused) {
-        tts.chunkIdx += 1;
-        if (tts.chunkIdx < tts.chunks.length) {
-          if (tts.activeCard) updateCardAudioUI(tts.activeCard);
-          speakNextChunk();
-        } else {
+      const idx = i;
+      utter.onstart = () => {
+        if (tts.utterToken !== myToken) return;
+        tts.chunkIdx = idx;
+        tts.chunkStartedAt = Date.now();
+        if (tts.activeCard) updateCardAudioUI(tts.activeCard);
+      };
+      utter.onend = () => {
+        if (tts.utterToken !== myToken) return;
+        if (idx === tts.chunks.length - 1) {
           stopSpeech();
         }
-      }
-    };
-    utter.onerror = ev => {
-      if (tts.utterToken !== myToken) return;
-      if (ev.error === "interrupted" || ev.error === "canceled") return;
-      stopSpeech();
-    };
-    window.speechSynthesis.speak(utter);
+      };
+      utter.onerror = ev => {
+        if (tts.utterToken !== myToken) return;
+        if (ev.error === "interrupted" || ev.error === "canceled") return;
+        if (idx === tts.chunks.length - 1) {
+          stopSpeech();
+        }
+      };
+      window.speechSynthesis.speak(utter);
+    }
   }
 
   function extractCardSpeechText(cardEl) {
     if (!cardEl) return "";
     const parts = [];
-    const h3 = cardEl.querySelector("h3");
-    if (h3) parts.push(h3.textContent.trim());
-    cardEl.querySelectorAll("p").forEach(p => {
-      const txt = p.textContent.trim();
-      if (txt && !txt.includes("點擊收聽") && !txt.includes("Tap to listen") && !p.querySelector(".tts-status-label")) {
-        parts.push(txt);
+    const sep = currentLang === "en" ? " " : "。";
+
+    if (cardEl.classList.contains("deity-card")) {
+      // 只取內文（「神祇介紹」與「導覽重點」），不包含標題、副標題與圖片說明
+      cardEl.querySelectorAll(".deity-intro-body, .deity-hl-body").forEach(el => {
+        const txt = el.textContent.trim();
+        if (txt) parts.push(txt);
+      });
+      if (!parts.length) {
+        const fallback = cardEl.querySelector("p.font-body-md");
+        if (fallback && fallback.textContent.trim()) parts.push(fallback.textContent.trim());
       }
-    });
-    return prepareSpeechText(parts.join("。 "), currentLang);
+    } else if (cardEl.classList.contains("arch-card")) {
+      // 只取內文摘要、重點說明與深度解析段落，不包含標題、年代標籤與圖片說明
+      cardEl.querySelectorAll(".arch-summary, .arch-callout-text, .arch-deep-dive .deep-dive-block p").forEach(el => {
+        const txt = el.textContent.trim();
+        if (txt) parts.push(txt);
+      });
+    }
+
+    return prepareSpeechText(parts.join(sep), currentLang);
   }
 
   function startCardSpeechAt(cardEl, key, initialFrac) {
@@ -269,6 +304,9 @@
 
     tts.timer = setInterval(() => {
       if (tts.isPlaying && !tts.isPaused && !tts.isScrubbing) {
+        if ("speechSynthesis" in window && window.speechSynthesis.paused) {
+          window.speechSynthesis.resume();
+        }
         const f = computeProgressFraction();
         tts.elapsed = Math.round(f * tts.estTotalSec);
         if (tts.activeCard) updateCardAudioUI(tts.activeCard);
